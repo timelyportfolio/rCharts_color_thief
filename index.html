@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<!--
+help from
+  http://bl.ocks.org/mbostock/3681006
+  http://www.billdwhite.com/wordpress/2013/11/26/d3-minimap-pan-and-zoom-demo/
+-->
+
+<meta charset="utf-8">
+
+<head>
+
+  <title>Zoom + Pan</title>
+
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="js/color-thief.js"></script>
+  <script src="js/chroma.js"></script>
+  
+  <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet"/>  
+  
+  <style>
+    /*.drag-drop-section{display:none}*/
+    
+    .drop-zone{
+      background-color:#222;
+      -webkit-border-radius:8px;
+      -moz-border-radius:8px;
+      -ms-border-radius:8px;
+      -o-border-radius:8px;border-radius:8px
+    }
+    
+    .drop-zone.dragging{
+      font-weight:700;
+      -webkit-box-shadow:inset 0 0 0 8px #4ae;
+      -moz-box-shadow:inset 0 0 0 8px #4ae;
+      box-shadow:inset 0 0 0 8px #4ae
+    }
+    
+    .drop-zone.dragging .drop-zone-label{color:#4ae}
+    
+    .drop-zone.dragging .default-label{display:none}
+    
+    .drop-zone.dragging .dragging-label{display:block}
+    
+    .drop-zone-label{
+      color:#fdf485;
+      font-size:1.8rem;
+      text-align:center;
+      pointer-events:none;
+      text-transform:uppercase;
+      -webkit-border-radius:8px;
+      -moz-border-radius:8px;
+      -ms-border-radius:8px;
+      -o-border-radius:8px;border-radius:8px
+    }
+
+    .dragging-label{display:none}.dropped-image
+  </style>
+  
+</head>
+
+<body>
+  <body>
+    <a href="https://github.com/timelyportfolio/rCharts_colors">
+      <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"/>
+    </a>
+    <div class="container">
+      <div class="page-header">
+        <h1>
+          rCharts + dimple Color Thief
+        </h1>
+      </div>
+      <div id="color_row" class="row">
+        <div class="col-md-3">
+          <div id = "canvasDiv">
+            <canvas></canvas>
+          </div>
+          <div id="drop-zone" class="drop-zone">
+            <div class="drop-zone-label default-label">Drag an image here</div>
+            <div class="drop-zone-label dragging-label">Drop it!</div>
+          </div>
+        </div>
+        <div class = "col-md-5 col-md-offset-4" id = "palette">
+        </div>
+      </div>
+  
+  <div id = "palette"></div>  
+
+  <script>
+  
+  // for now make these global
+  // but need to fix this eventually
+  var x = d3.scale.linear();
+  var y = d3.scale.linear();
+  
+  var canvas = d3.select("#canvasDiv").select("canvas")
+    .style( "width", d3.select("#canvasDiv").style("width") )
+  var context;
+  var width;
+  var height;
+  
+  var colorThief = new ColorThief()
+  var color;
+  var palette;
+  
+  var paletteDiv = d3.select("#palette")
+  
+  //set up drag and drop behavior
+  initDragDrop();
+    
+  //load image and draw on canvas
+  imageObj = new Image();
+  imageObj.onload = function() {
+    initCanvas( );
+  }
+  imageObj.src = "img/14226682300_849ec58f3f.jpg"
+  
+  function initCanvas() {
+    //preserve height width ratio of image
+  if (imageObj.width > imageObj.height) {
+    width = parseInt(canvas.style("width"));
+    //height as ratio of width
+    height = parseInt(canvas.style("width")) * imageObj.height / imageObj.width;
+    canvas.style("height", height + "px");
+  } else {
+    height = parseInt(canvas.style("height"));
+    //width as ratio of height
+    width = parseInt(canvas.style("height")) * imageObj.width / imageObj.height;
+    canvas.style("width", width + "px");
+  }
+  
+    x
+      .domain([0, width])
+      .range([0, width]);
+      
+    y 
+      .domain([0, height])
+      .range([height, 0]);
+    
+    context = canvas
+      .call(d3.behavior.zoom().x(x).y(y).scaleExtent([1, 8]).on("zoom", zoom))
+    .node().getContext("2d");
+    
+    draw();
+    
+    getPalette();
+    
+  }
+  
+  function draw( ) {
+    context.clearRect(0, 0, width, height);
+    context.drawImage(imageObj,0,0, width, height);
+    
+  }
+  
+  function zoom() {
+    context.clearRect(0, 0, width, height);
+    clip( );
+  }
+  
+  
+  function clip( ){
+    scale = d3.event.scale;
+    
+    var tbound = -height *  (scale - 1),
+        bbound = 0 ,
+        lbound = -width  *  (scale - 1),
+        rbound = 0;
+    // limit translation to thresholds
+    translation = d3.event ? d3.event.translate : [0, 0];
+    translation = [
+        Math.max(Math.min(translation[0], rbound), lbound),
+        Math.max(Math.min(translation[1], bbound), tbound)
+    ];
+  
+    
+    context.resetTransform();
+    if (d3.event.scale > 1){
+      context.translate( translation[0], translation[1] );
+      context.scale( scale, scale );
+    }  
+      
+    draw();
+    
+    getPalette();
+  }
+    
+  function getPalette ( ){
+    color = colorThief.getColor( context );
+    palette = colorThief.getPalette( context );
+    
+    var paletteCol = paletteDiv.selectAll(".colors")
+      .data(palette.map(function(r){
+        return chroma.rgb(r).hex()
+      }))
+    
+    paletteCol.enter()
+      .append("div")
+      .attr("class","colors");
+      
+    paletteCol.exit()
+      .remove();
+      
+    paletteCol
+      .style("display","inline-block")
+      .style("background-color",function(d){return d})
+      .style("height","200px")
+      .style("width",d3.format(".2%")(1/palette.length))
+  }
+  
+  function initDragDrop(){
+  
+    // Drag'n'drop demo
+    // Thanks to Nathan Spady (http://nspady.com/) who did the bulk of the drag'n'drop work.
+  
+    // Setup the drag and drop behavior if supported
+    //if (Modernizr.draganddrop && !!window.FileReader && !isMobile()) {
+  
+      d3.select('#drag-drop').style("display","block")
+      
+      var dropZone = d3.select('#drop-zone');
+      
+      var handleDragEnter = function(event){
+        dropZone.classed('dragging',true);
+        return false;
+      };
+      var handleDragLeave = function(event){
+        dropZone.classed('dragging',false);
+        return false;
+      };
+      function handleDragOver() {
+        var ev = d3.event;
+        ev.stopPropagation();
+        ev.preventDefault();
+        ev.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+      }
+      var handleDrop = function(event){
+        var event = d3.event
+          , files = event.dataTransfer.files // FileList object
+          , about = []
+          , shape = null;
+        event.stopPropagation();
+        event.preventDefault();
+        dropZone.classed('dragging',false);
+        handleFiles(files);
+        return false;
+      };
+      
+      dropZone
+        .on('dragenter', handleDragEnter)
+        .on('dragleave', handleDragLeave)
+        .on('dragover', handleDragOver)
+        .on('drop', handleDrop);
+    //}
+  
+    function handleFiles(files) {
+      //thanks https://gist.github.com/johan/1392966
+      var imageType      = /image.*/;
+      var fileCount      = files.length;
+  
+      //for (var i = 0; i < fileCount; i++) {
+      //only take 1 file
+        var file = files[0];
+  
+        if (file.type.match(imageType)) {
+          var reader = new FileReader();
+          reader.onload = function(e){
+            imageObj.src=e.srcElement.result
+          }
+          reader.readAsDataURL(file);
+        } else {
+          alert('File must be a supported image type.');
+        }
+      //}
+    }
+    
+  }
+  
+  </script>
+
+</body>
