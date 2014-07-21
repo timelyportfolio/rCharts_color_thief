@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<!--
+help from
+  http://bl.ocks.org/mbostock/3681006
+  http://www.billdwhite.com/wordpress/2013/11/26/d3-minimap-pan-and-zoom-demo/
+-->
+
+<meta charset="utf-8">
+
+<head>
+<title>Zoom + Pan</title>
+<style>
+
+.overlay {
+  fill: none;
+  pointer-events: all;
+}
+
+</style>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="js/color-thief.js"></script>
+<script src="js/chroma.js"></script>
+</head>
+
+<body>
+  
+</body>
+
+
+
+<script>
+
+var width;
+var height;
+var x;
+var y;
+var canvas;
+
+var colorThief = new ColorThief()
+var color;
+var palette;
+
+var paletteDiv = d3.select("body").append("div")
+                    .attr("id","palette")
+  
+//load image and draw on canvas
+imageObj = new Image();
+imageObj.onload = function() {
+  initCanvas( );
+}
+imageObj.src = "img/14226682300_849ec58f3f.jpg"
+
+function zoom() {
+  canvas.clearRect(0, 0, width, height);
+  clip( );
+}
+
+function initCanvas() {
+  
+  width = imageObj.width;
+  height = imageObj.height;
+  
+  x = d3.scale.linear()
+    .domain([0, width])
+    .range([0, width]);
+  y = d3.scale.linear()
+    .domain([0, height])
+    .range([height, 0]);
+  
+  canvas = d3.select("body").append("canvas")
+    .attr("width", width)
+    .attr("height", height)
+    .call(d3.behavior.zoom().x(x).y(y).scaleExtent([1, 8]).on("zoom", zoom))
+  .node().getContext("2d");
+  
+  draw();
+  
+  getPalette();
+}
+
+function draw( ) {
+  
+  canvas.drawImage(imageObj,0,0);
+  
+}
+
+
+function clip( ){
+  scale = d3.event.scale;
+  
+  var tbound = -height *  (scale - 1),
+      bbound = 0 ,
+      lbound = -width  *  (scale - 1),
+      rbound = 0;
+  // limit translation to thresholds
+  translation = d3.event ? d3.event.translate : [0, 0];
+  translation = [
+      Math.max(Math.min(translation[0], rbound), lbound),
+      Math.max(Math.min(translation[1], bbound), tbound)
+  ];
+
+  
+  canvas.resetTransform();
+  if (d3.event.scale > 1){
+    canvas.translate( translation[0], translation[1] );
+    canvas.scale( scale, scale );
+  }  
+    
+  draw();
+  
+  getPalette();
+}
+  
+function getPalette ( ){
+  color = colorThief.getColor( canvas );
+  palette = colorThief.getPalette( canvas );
+  
+  var paletteCol = paletteDiv.selectAll(".colors")
+    .data(palette.map(function(r){
+      return chroma.rgb(r).hex()
+    }))
+  
+  paletteCol.enter()
+    .append("div")
+    .attr("class","colors");
+    
+  paletteCol.exit()
+    .remove();
+    
+  paletteCol
+    .style("display","inline-block")
+    .style("background-color",function(d){return d})
+    .style("height","200px")
+    .style("width",d3.format(".2%")(1/palette.length))
+}
+
+</script>
