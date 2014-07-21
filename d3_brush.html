@@ -8,28 +8,76 @@ help from
 <meta charset="utf-8">
 
 <head>
-<title>Zoom + Pan</title>
-<style>
 
-.overlay {
-  fill: none;
-  pointer-events: all;
-}
+  <title>Zoom + Pan</title>
 
-</style>
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="js/color-thief.js"></script>
-<script src="js/chroma.js"></script>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="js/color-thief.js"></script>
+  <script src="js/chroma.js"></script>
+  
+  <style>
+    /*.drag-drop-section{display:none}*/
+    
+    .drop-zone{
+      height:25rem;
+      margin-bottom:4rem;
+      background-color:#222;
+      -webkit-border-radius:8px;
+      -moz-border-radius:8px;
+      -ms-border-radius:8px;
+      -o-border-radius:8px;border-radius:8px
+    }
+    
+    .drop-zone.dragging{
+      font-weight:700;
+      -webkit-box-shadow:inset 0 0 0 8px #4ae;
+      -moz-box-shadow:inset 0 0 0 8px #4ae;
+      box-shadow:inset 0 0 0 8px #4ae
+    }
+    
+    .drop-zone.dragging .drop-zone-label{color:#4ae}
+    
+    .drop-zone.dragging .default-label{display:none}
+    
+    .drop-zone.dragging .dragging-label{display:block}
+    
+    .drop-zone-label{
+      position:relative;
+      top:11rem;
+      color:#fdf485;
+      font-size:1.8rem;
+      text-align:center;
+      pointer-events:none;
+      text-transform:uppercase;
+      -webkit-border-radius:8px;
+      -moz-border-radius:8px;
+      -ms-border-radius:8px;
+      -o-border-radius:8px;border-radius:8px
+    }
+    
+    @media (min-width: 40rem){.drop-zone-label{top:10.5rem;font-size:2.4rem}}.dragging-label{display:none}.dropped-image
+  </style>
+  
 </head>
 
 <body>
+  <section id = "drag-drop" class="drag-drop-section">
+    <div id="drop-zone" class="drop-zone">
+      <div class="drop-zone-label default-label">Drag an image here</div>
+      <div class="drop-zone-label dragging-label">Drop it!</div>
+      <div id = "canvasDiv"></div>
+    </div>
+  </section>
   
+  <div id = "palette"></div>  
 </body>
 
 
 
 <script>
 
+// for now make these global
+// but need to fix this eventually
 var width;
 var height;
 var x;
@@ -40,8 +88,10 @@ var colorThief = new ColorThief()
 var color;
 var palette;
 
-var paletteDiv = d3.select("body").append("div")
-                    .attr("id","palette")
+var paletteDiv = d3.select("#palette")
+
+//set up drag and drop behavior
+initDragDrop();
   
 //load image and draw on canvas
 imageObj = new Image();
@@ -49,11 +99,6 @@ imageObj.onload = function() {
   initCanvas( );
 }
 imageObj.src = "img/14226682300_849ec58f3f.jpg"
-
-function zoom() {
-  canvas.clearRect(0, 0, width, height);
-  clip( );
-}
 
 function initCanvas() {
   
@@ -67,7 +112,7 @@ function initCanvas() {
     .domain([0, height])
     .range([height, 0]);
   
-  canvas = d3.select("body").append("canvas")
+  canvas = d3.select("#canvasDiv").append("canvas")
     .attr("width", width)
     .attr("height", height)
     .call(d3.behavior.zoom().x(x).y(y).scaleExtent([1, 8]).on("zoom", zoom))
@@ -82,6 +127,11 @@ function draw( ) {
   
   canvas.drawImage(imageObj,0,0);
   
+}
+
+function zoom() {
+  canvas.clearRect(0, 0, width, height);
+  clip( );
 }
 
 
@@ -132,6 +182,74 @@ function getPalette ( ){
     .style("background-color",function(d){return d})
     .style("height","200px")
     .style("width",d3.format(".2%")(1/palette.length))
+}
+
+function initDragDrop(){
+
+  // Drag'n'drop demo
+  // Thanks to Nathan Spady (http://nspady.com/) who did the bulk of the drag'n'drop work.
+
+  // Setup the drag and drop behavior if supported
+  //if (Modernizr.draganddrop && !!window.FileReader && !isMobile()) {
+
+    d3.select('#drag-drop').style("display","block")
+    
+    var dropZone = d3.select('#drop-zone');
+    
+    var handleDragEnter = function(event){
+      dropZone.classed('dragging',true);
+      return false;
+    };
+    var handleDragLeave = function(event){
+      dropZone.classed('dragging',false);
+      return false;
+    };
+    function handleDragOver() {
+      var ev = d3.event;
+      ev.stopPropagation();
+      ev.preventDefault();
+      ev.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+    }
+    var handleDrop = function(event){
+      var event = d3.event
+        , files = event.dataTransfer.files // FileList object
+        , about = []
+        , shape = null;
+      event.stopPropagation();
+      event.preventDefault();
+      dropZone.classed('dragging',false);
+      handleFiles(files);
+      return false;
+    };
+    
+    dropZone
+      .on('dragenter', handleDragEnter)
+      .on('dragleave', handleDragLeave)
+      .on('dragover', handleDragOver)
+      .on('drop', handleDrop);
+  //}
+
+  function handleFiles(files) {
+    //thanks https://gist.github.com/johan/1392966
+    var imageType      = /image.*/;
+    var fileCount      = files.length;
+
+    //for (var i = 0; i < fileCount; i++) {
+    //only take 1 file
+      var file = files[0];
+
+      if (file.type.match(imageType)) {
+        var reader = new FileReader();
+        reader.onload = function(e){
+          imageObj.src=e.srcElement.result
+        }
+        reader.readAsDataURL(file);
+      } else {
+        alert('File must be a supported image type.');
+      }
+    //}
+  }
+  
 }
 
 </script>
