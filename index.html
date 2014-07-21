@@ -71,7 +71,7 @@ help from
       </div>
       <div id="color_row" class="row">
         <div class="col-md-3">
-          <div id = "canvasDiv">
+          <div id = "canvasDiv" style = "height:200px;">
             <canvas></canvas>
           </div>
           <div id="drop-zone" class="drop-zone">
@@ -93,7 +93,7 @@ help from
   var y = d3.scale.linear();
   
   var canvas = d3.select("#canvasDiv").select("canvas")
-    .style( "width", d3.select("#canvasDiv").style("width") )
+    
   var context;
   var width;
   var height;
@@ -115,30 +115,34 @@ help from
   imageObj.src = "img/14226682300_849ec58f3f.jpg"
   
   function initCanvas() {
+    if(context) context.clearRect(0,0,width,height);
+    
     //preserve height width ratio of image
-  if (imageObj.width > imageObj.height) {
-    width = parseInt(canvas.style("width"));
-    //height as ratio of width
-    height = parseInt(canvas.style("width")) * imageObj.height / imageObj.width;
-    canvas.style("height", height + "px");
-  } else {
-    height = parseInt(canvas.style("height"));
-    //width as ratio of height
-    width = parseInt(canvas.style("height")) * imageObj.width / imageObj.height;
+    if (imageObj.width > imageObj.height) {
+      width = parseInt(d3.select("#canvasDiv").style("width"));
+      //height as ratio of width
+      height = width * imageObj.height / imageObj.width;
+    } else {
+      height = parseInt(d3.select("#canvasDiv").style("height"));
+      //width as ratio of height
+      width = parseInt(canvas.style("height")) * imageObj.width / imageObj.height;
+    }
     canvas.style("width", width + "px");
-  }
-  
+    canvas.style("height", height + "px");
+      
     x
-      .domain([0, width])
+      .domain([0, imageObj.width])
       .range([0, width]);
       
     y 
-      .domain([0, height])
+      .domain([0, imageObj.height])
       .range([height, 0]);
     
     context = canvas
       .call(d3.behavior.zoom().x(x).y(y).scaleExtent([1, 8]).on("zoom", zoom))
     .node().getContext("2d");
+    
+    context.resetTransform();
     
     draw();
     
@@ -147,14 +151,17 @@ help from
   }
   
   function draw( ) {
-    context.clearRect(0, 0, width, height);
-    context.drawImage(imageObj,0,0, width, height);
+    
+    context.clearRect(0,0,width,height);
+    context.drawImage(imageObj, 0, 0, width, height);
     
   }
   
   function zoom() {
+    
     context.clearRect(0, 0, width, height);
     clip( );
+    
   }
   
   
@@ -256,7 +263,7 @@ help from
       //thanks https://gist.github.com/johan/1392966
       var imageType      = /image.*/;
       var fileCount      = files.length;
-  
+      
       //for (var i = 0; i < fileCount; i++) {
       //only take 1 file
         var file = files[0];
