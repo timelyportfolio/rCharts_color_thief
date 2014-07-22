@@ -285,7 +285,7 @@ help from
       .call(d3.behavior.zoom().x(x).y(y).scaleExtent([1, 12]).on("zoom", zoom))
     .node().getContext("2d");
     
-    context.resetTransform();
+    context.setTransform(1, 0, 0, 1, 0, 0);;
     
     draw();
     
@@ -323,7 +323,7 @@ help from
     ];
   
     
-    context.resetTransform();
+    context.setTransform(1, 0, 0, 1, 0, 0);;
     if (d3.event.scale > 1){
       context.translate( translation[0], translation[1] );
       context.scale( scale, scale );
