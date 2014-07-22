@@ -11,9 +11,14 @@ help from
 
   <title>Zoom + Pan</title>
 
+  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
   <script src="http://d3js.org/d3.v3.min.js"></script>
-  <script src="js/color-thief.js"></script>
+  <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
+  <script src="http://timelyportfolio.github.io/rCharts_dimple/js/d3-grid.js"></script>  
   <script src="js/chroma.js"></script>
+  <script src="js/color-scheme.min.js"></script>
+  <script src="js/color-thief.js"></script>
   
   <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet"/>  
   
@@ -71,7 +76,7 @@ help from
       </div>
       <div id="color_row" class="row">
         <div class="col-md-3">
-          <div id = "canvasDiv" style = "height:200px;">
+          <div id = "canvasDiv">
             <canvas></canvas>
           </div>
           <div id="drop-zone" class="drop-zone">
@@ -79,12 +84,154 @@ help from
             <div class="drop-zone-label dragging-label">Drop it!</div>
           </div>
         </div>
-        <div class = "col-md-5 col-md-offset-4" id = "palette">
+        <div class="col-md-2">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4>
+                <a href="http://brianhann.com/color-scheme-js/" target="_blank">color-scheme.js</a>
+              </h4>
+            </div>
+            <div class="panel-body">
+              <div class="btn-group-vertical">
+                <div class="btn-group">
+                  <button type="button" id="scheme_selection" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    Monochromatic
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu" id="scheme_buttons">
+                    <li>
+                      <a href="#">Monochromatic</a>
+                    </li>
+                    <li>
+                      <a href="#">Contrast</a>
+                    </li>
+                    <li>
+                      <a href="#">Triade</a>
+                    </li>
+                    <li>
+                      <a href="#">Tetrade</a>
+                    </li>
+                    <li>
+                      <a href="#">Analogic</a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="btn-group">
+                  <button type="button" id="variation_selection" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    Default
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu" id="variation_buttons">
+                    <li>
+                      <a href="#">Default</a>
+                    </li>
+                    <li>
+                      <a href="#">Pastel</a>
+                    </li>
+                    <li>
+                      <a href="#">Soft</a>
+                    </li>
+                    <li>
+                      <a href="#">Light</a>
+                    </li>
+                    <li>
+                      <a href="#">Hard</a>
+                    </li>
+                    <li>
+                      <a href="#">Pale</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4>
+                <a href="https://vis4.net/blog/posts/mastering-multi-hued-color-scales" target="_blank">chroma.js</a>
+              </h4>
+            </div>
+            <div class="panel-body">
+              <label>
+                Steps
+                <input id="steps" checked="checked" type="number" value="9" style="width: 40px;"/>
+              </label>
+              <div class="checkbox">
+                <label>
+                  <input id="bez" type="checkbox"/>
+                  Bezier
+                </label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input id="coL" type="checkbox"/>
+                  Lightness
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>        
+        <div class = "col-md-5" id = "palette">
+          <div class = "row">
+            <div id = "paletteThief"></div>
+            <div id = "thiefText"></div>
+          </div> 
+          <div class = "row">
+            <div id = "paletteScheme"></div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-3">This example magically selects colors from an image.
+          Pan and zoom to get colors from just a section of the image.
+        </div>
+        <div id="palette_text" class="col-md-5 col-md-offset-4"></div>
+      </div>
+      <div id="chart_row" class="row">
+        <div class="col-md-3">
+          <hr/>
+           On the Javascript side of the world, we used 
+          <ul class="nav nav-pills nav-stacked">
+            <li>
+              <a href="http://lokeshdhakar.com/projects/color-thief/" target="_blank">
+                <span class="badge">1</span>
+                color-thief
+              </a>
+            </li>
+            <li>
+              <a href="https://vis4.net/blog/posts/mastering-multi-hued-color-scales" target="_blank">
+                <span class="badge">2</span>
+                chroma.js
+              </a>
+            </li>
+            <li>
+              <a href="http://brianhann.com/color-scheme-js/" target="_blank">
+                <span class="badge">3</span>
+                color-scheme.js
+              </a>
+            </li>
+            <li>
+              <a href="http://dimplejs.org/" target="_blank">
+                <span class="badge">4</span>
+                dimple.js
+              </a>
+            </li>
+            <li>
+              <a href="http://getbootstrap.com/" target="_blank">
+                <span class="badge">5</span>
+                bootstrap
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-9">
+          <div id = 'chartc887aab49ff' class = 'rChart dimple'></div>
         </div>
       </div>
   
-  <div id = "palette"></div>  
-
   <script>
   
   // for now make these global
@@ -99,10 +246,6 @@ help from
   var height;
   
   var colorThief = new ColorThief()
-  var color;
-  var palette;
-  
-  var paletteDiv = d3.select("#palette")
   
   //set up drag and drop behavior
   initDragDrop();
@@ -112,7 +255,7 @@ help from
   imageObj.onload = function() {
     initCanvas( );
   }
-  imageObj.src = "img/14226682300_849ec58f3f.jpg"
+  imageObj.src = "img/blue_angel.jpg"
   
   function initCanvas() {
     if(context) context.clearRect(0,0,width,height);
@@ -139,14 +282,14 @@ help from
       .range([height, 0]);
     
     context = canvas
-      .call(d3.behavior.zoom().x(x).y(y).scaleExtent([1, 8]).on("zoom", zoom))
+      .call(d3.behavior.zoom().x(x).y(y).scaleExtent([1, 12]).on("zoom", zoom))
     .node().getContext("2d");
     
     context.resetTransform();
     
     draw();
     
-    getPalette();
+    updateColors();
     
   }
   
@@ -188,31 +331,10 @@ help from
       
     draw();
     
-    getPalette();
+    updateColors();
+    
   }
     
-  function getPalette ( ){
-    color = colorThief.getColor( context );
-    palette = colorThief.getPalette( context );
-    
-    var paletteCol = paletteDiv.selectAll(".colors")
-      .data(palette.map(function(r){
-        return chroma.rgb(r).hex()
-      }))
-    
-    paletteCol.enter()
-      .append("div")
-      .attr("class","colors");
-      
-    paletteCol.exit()
-      .remove();
-      
-    paletteCol
-      .style("display","inline-block")
-      .style("background-color",function(d){return d})
-      .style("height","200px")
-      .style("width",d3.format(".2%")(1/palette.length))
-  }
   
   function initDragDrop(){
   
@@ -281,6 +403,546 @@ help from
     }
     
   }
+  
+      d3.selectAll("input").on("change",function(){
+        updateColors(  );
+      });
+
+      d3.selectAll("#scheme_buttons li a").on("click",function(){
+        var selText = $(this).text();
+       $(this).parents(".btn-group").find(".dropdown-toggle").html(selText+" <span class='caret'></span>");
+       updateColors( );
+      })
+
+      d3.selectAll("#variation_buttons li a").on("click",function(){
+        var selText = $(this).text();
+       $(this).parents(".btn-group").find(".dropdown-toggle").html(selText+" <span class='caret'></span>");
+       updateColors( );
+      })
+
+     
+  function updateColors( ) {
+    
+    function updateThief() {
+      var palette = colorThief.getPalette( context );
+      
+      palette = palette.map(function(r){
+          return chroma.rgb(r).hex()
+        });
+
+      if (d3.select("#bez").node().checked){
+        palette = getChroma( applyBez( palette.splice(0,4) ));
+      }
+      
+      if (d3.select("#coL").node().checked  && !d3.select("#bez").node().checked){
+        palette = getChroma( palette ) ;
+      }
+      
+      var paletteCol = d3.select("#paletteThief").selectAll(".colors")
+        .data(palette)
+              
+      
+      paletteCol.enter()
+        .append("div")
+        .attr("class","colors");
+        
+      paletteCol.exit()
+        .remove();
+        
+      paletteCol
+        .style("display","inline-block")
+        .style("background-color",function(d){return d})
+        .style("height","100px")
+        .style("width",d3.format(".2%")(1/palette.length))
+        .attr("title",function(d){return d})
+        
+      d3.select("#thiefText").text( palette.join() );
+      
+      return palette
+    } 
+    
+    function applyBez( colors ) {
+      
+      if ( colors ) {
+        colors = chroma.interpolate.bezier( colors )
+      }
+      return colors;
+      
+    }
+    
+    function getChroma( colors ) {
+      
+      var scale = chroma.scale(colors)
+          .domain([0,+d3.select("#steps")[0][0].value],d3.select("#steps")[0][0].value)
+          .correctLightness( d3.select("#coL").node().checked );
+    
+      colors = d3.range(0,d3.select("#steps")[0][0].value,1)
+        .map(function(d){return scale(d).hex()});
+        
+      return colors;
+    } 
+    
+    var palette = updateThief( );
+    
+    updateChartColors( palette );
+    
+    var hex = chroma.rgb(palette[0]).hex()
+    var hue = chroma.rgb(palette[0]).hsv()[0]
+
+    colors = (new ColorScheme).from_hue( hue ) //chroma.hex(hex).hsv()[0] )
+      //.from_hex( hex.replace("#", "" ).toUpperCase() )
+      .scheme(d3.select("#scheme_selection").text().toLowerCase().replace(/[ \t\r\n]+/g,""))
+      .variation(d3.select("#variation_selection").text().toLowerCase().replace(/[ \t\r\n]+/g,""))
+      .colors().map(function(col){return "#" + col})
+
+    if (d3.select("#scheme_selection").text().toLowerCase().replace(/[ \t\r\n]+/g,"") != "monochromatic")  colors.splice(0,0,hex);
+
+    if (d3.select("#bez").node().checked){
+      if( d3.select("#scheme_selection").text().toLowerCase().replace(/[ \t\r\n]+/g,"") != "monochromatic"){
+        //if not monochromatic then will pick 0,3,4,...,length-1
+          colors = colors.filter(function(col,i){
+            if( (colors.length < 9 && i % 4 < 2 ) || (colors.length >= 9 && i % 4 === 0) ) { //|| i % 4 === 3 ) {
+              return col;
+            }
+          })
+      }
+      colors = getChroma( applyBez( colors ) );
+    }
+    
+    if (d3.select("#coL").node().checked){
+      colors = getChroma( colors );
+    }
+
+    var paletteScheme = d3.selectAll("#paletteScheme").selectAll("div").data(colors);
+
+    paletteScheme
+      .enter()
+        .append("div")
+        
+    paletteScheme
+      .exit().remove();
+    
+    paletteScheme
+      .style("display", "inline-block")
+      .style("width",d3.format(".4%")(1/colors.length))
+      .style("height","100px")
+      .style("background",function(d){return d;})
+      .attr("title",function(d){return d})
+
+    d3.select("#palette_text").text( colors.join() );
+
+  }
+  
+  function updateChartColors( colors ){
+    var dcolors = colors.map(function(col){
+      return new dimple.color(col);
+    })
+    chartc887aab49ff.forEach(function(cht){
+      Object.keys(cht._assignedColors).forEach(function(k,i){
+        cht._assignedColors[k] = dcolors[i % dcolors.length];
+      })
+      cht.defaultColors = dcolors;
+      cht.draw();
+    })
+  }
+  
+var chartc887aab49ff = (function() {
+  var opts = {
+ "dom": "chartc887aab49ff",
+"width":    900,
+"height":    500,
+"xAxis": {
+ "type": "addCategoryAxis",
+"showPercent": false,
+"orderRule": ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'] 
+},
+"yAxis": {
+ "type": "addMeasureAxis",
+"showPercent": false 
+},
+"zAxis": [],
+"colorAxis": [],
+"defaultColors": [],
+"layers": [],
+"legend": [],
+"x": "x",
+"y": "y",
+"groups": "grp",
+"type": "bar",
+"id": "chartc887aab49ff" 
+},
+    data = [{"x":"Sep","y":8200.70248143747,"grp":"A"},{"x":"Mar","y":4930.7687219698,"grp":"A"},{"x":"Oct","y":3464.10946990363,"grp":"A"},{"x":"Mar","y":4208.36009760387,"grp":"A"},{"x":"Mar","y":9154.6432687901,"grp":"A"},{"x":"Apr","y":2804.8107677605,"grp":"A"},{"x":"Sep","y":6816.27180753276,"grp":"A"},{"x":"Aug","y":3929.69926749356,"grp":"A"},{"x":"Aug","y":4469.42317439243,"grp":"A"},{"x":"Mar","y":6292.17017139308,"grp":"A"},{"x":"Jun","y":2884.51996166259,"grp":"A"},{"x":"Apr","y":4893.90893816017,"grp":"A"},{"x":"Jul","y":5447.29157746769,"grp":"A"},{"x":"Jan","y":1439.19791909866,"grp":"A"},{"x":"Jun","y":2073.58146226034,"grp":"A"},{"x":"Dec","y":8122.67380463891,"grp":"A"},{"x":"May","y":7860.59169587679,"grp":"A"},{"x":"May","y":6570.53722627461,"grp":"A"},{"x":"Aug","y":5953.87669769116,"grp":"A"},{"x":"May","y":7448.00869352184,"grp":"A"},{"x":"Nov","y":3697.74795277044,"grp":"A"},{"x":"Sep","y":1655.98370344378,"grp":"A"},{"x":"Mar","y":3725.57729203254,"grp":"A"},{"x":"Sep","y":3000.21625752561,"grp":"A"},{"x":"Feb","y":3726.50931146927,"grp":"A"},{"x":"Aug","y":4741.98034661822,"grp":"A"},{"x":"Sep","y":9778.37309241295,"grp":"A"},{"x":"Feb","y":8987.38361056894,"grp":"A"},{"x":"Aug","y":7682.79177555814,"grp":"A"},{"x":"Mar","y":6315.03554224037,"grp":"A"},{"x":"Mar","y":4049.07862609252,"grp":"A"},{"x":"Jun","y":7032.90402074344,"grp":"A"},{"x":"Aug","y":5078.79861164838,"grp":"A"},{"x":"Nov","y":9425.81880581565,"grp":"A"},{"x":"Mar","y":5176.83134577237,"grp":"A"},{"x":"Mar","y":1459.42272851244,"grp":"A"},{"x":"Apr","y":2943.75425111502,"grp":"A"},{"x":"Oct","y":8492.44912411086,"grp":"A"},{"x":"May","y":3810.6083846651,"grp":"A"},{"x":"Feb","y":8526.37952077203,"grp":"A"},{"x":"Dec","y":1488.103432348,"grp":"A"},{"x":"Nov","y":9431.02514743805,"grp":"A"},{"x":"Oct","y":2646.00788406096,"grp":"A"},{"x":"Oct","y":6114.23065257259,"grp":"A"},{"x":"Apr","y":1217.70337224007,"grp":"A"},{"x":"Mar","y":8348.09452085756,"grp":"A"},{"x":"Nov","y":6554.99151372351,"grp":"A"},{"x":"Mar","y":4173.16594044678,"grp":"A"},{"x":"Jul","y":5500.53496239707,"grp":"A"},{"x":"Apr","y":5052.20458470285,"grp":"A"},{"x":"Aug","y":6648.88745802455,"grp":"A"},{"x":"Oct","y":1611.71229928732,"grp":"A"},{"x":"Oct","y":5975.01145279966,"grp":"A"},{"x":"Nov","y":3041.51277337223,"grp":"A"},{"x":"Jun","y":3118.51299065165,"grp":"A"},{"x":"Nov","y":2804.52980846167,"grp":"A"},{"x":"Nov","y":3548.17999433726,"grp":"A"},{"x":"Feb","y":5375.85557554848,"grp":"A"},{"x":"Apr","y":6850.37360782735,"grp":"A"},{"x":"Aug","y":4654.07802048139,"grp":"A"},{"x":"Jun","y":1653.26019679196,"grp":"A"},{"x":"Apr","y":1028.79687491804,"grp":"A"},{"x":"Apr","y":9764.16542078368,"grp":"A"},{"x":"Aug","y":3646.65806316771,"grp":"A"},{"x":"Mar","y":4036.45721916109,"grp":"A"},{"x":"Jul","y":1202.21219654195,"grp":"A"},{"x":"Oct","y":6034.57596199587,"grp":"A"},{"x":"Jan","y":3015.81404684111,"grp":"A"},{"x":"May","y":4400.10130428709,"grp":"A"},{"x":"May","y":7047.23127908073,"grp":"A"},{"x":"Apr","y":4506.71896804124,"grp":"A"},{"x":"May","y":9893.35313159972,"grp":"A"},{"x":"Mar","y":9894.41320346668,"grp":"A"},{"x":"Feb","y":2458.68059596978,"grp":"A"},{"x":"Mar","y":4334.61377350613,"grp":"A"},{"x":"Apr","y":5749.72550291568,"grp":"A"},{"x":"Nov","y":8274.43818212487,"grp":"A"},{"x":"Jan","y":6674.96997094713,"grp":"A"},{"x":"Jul","y":9994.13646897301,"grp":"A"},{"x":"Aug","y":1735.99267401733,"grp":"A"},{"x":"Nov","y":2150.58836829849,"grp":"A"},{"x":"Oct","y":8945.6703402102,"grp":"A"},{"x":"May","y":3424.42986718379,"grp":"A"},{"x":"Jun","y":3984.18190632947,"grp":"A"},{"x":"May","y":5834.87712522037,"grp":"A"},{"x":"Jan","y":8080.49407298677,"grp":"A"},{"x":"Sep","y":4813.80997947417,"grp":"A"},{"x":"Oct","y":1181.91021704115,"grp":"A"},{"x":"Feb","y":1290.58032599278,"grp":"A"},{"x":"Sep","y":5022.50533504412,"grp":"A"},{"x":"Sep","y":4873.72136116028,"grp":"A"},{"x":"Jun","y":3364.50644698925,"grp":"A"},{"x":"Oct","y":6504.98683121987,"grp":"A"},{"x":"Sep","y":8190.44456165284,"grp":"A"},{"x":"Jul","y":3962.20072987489,"grp":"A"},{"x":"Mar","y":8080.07274824195,"grp":"A"},{"x":"Nov","y":2430.75217632577,"grp":"A"},{"x":"Jun","y":6886.72759616748,"grp":"A"},{"x":"Mar","y":4042.61901602149,"grp":"A"},{"x":"Jul","y":6068.39703768492,"grp":"A"},{"x":"Feb","y":3485.25138315745,"grp":"A"},{"x":"Nov","y":1695.47589519061,"grp":"A"},{"x":"Mar","y":9060.08702539839,"grp":"A"},{"x":"Jun","y":8814.94303932413,"grp":"A"},{"x":"Nov","y":3018.28366355039,"grp":"A"},{"x":"Sep","y":6567.36787990667,"grp":"A"},{"x":"Sep","y":8743.0972608272,"grp":"A"},{"x":"Sep","y":3258.97936942056,"grp":"A"},{"x":"Jun","y":4264.38229088672,"grp":"A"},{"x":"Jun","y":3151.03552094661,"grp":"A"},{"x":"Dec","y":6407.30310487561,"grp":"A"},{"x":"May","y":2657.65888453461,"grp":"A"},{"x":"Aug","y":5756.93838624284,"grp":"A"},{"x":"Jun","y":2134.24866530113,"grp":"A"},{"x":"Jan","y":5248.51383222267,"grp":"A"},{"x":"Apr","y":8790.89791560546,"grp":"A"},{"x":"May","y":9561.25055463053,"grp":"A"},{"x":"Dec","y":4383.27549491078,"grp":"A"},{"x":"May","y":8040.59692006558,"grp":"A"},{"x":"Feb","y":7459.16462736204,"grp":"A"},{"x":"Aug","y":4019.01360694319,"grp":"A"},{"x":"Dec","y":3536.70770232566,"grp":"A"},{"x":"Jan","y":4445.54924266413,"grp":"A"},{"x":"Aug","y":1646.83791971765,"grp":"A"},{"x":"Jun","y":9826.23707037419,"grp":"A"},{"x":"Apr","y":8045.92395480722,"grp":"A"},{"x":"Mar","y":9605.73833971284,"grp":"A"},{"x":"Nov","y":4456.66709542274,"grp":"A"},{"x":"Dec","y":2334.85983661376,"grp":"A"},{"x":"Apr","y":7662.61228499934,"grp":"A"},{"x":"Oct","y":5036.41332010739,"grp":"A"},{"x":"Nov","y":4910.70309118368,"grp":"A"},{"x":"Nov","y":7256.52856845409,"grp":"A"},{"x":"Jun","y":4499.81557391584,"grp":"A"},{"x":"Jun","y":2853.1383110676,"grp":"A"},{"x":"May","y":5848.92506711185,"grp":"A"},{"x":"Nov","y":1249.12063544616,"grp":"A"},{"x":"Mar","y":5101.12174251117,"grp":"A"},{"x":"Dec","y":8655.75347119011,"grp":"A"},{"x":"Nov","y":1319.6778241545,"grp":"A"},{"x":"Jul","y":4548.58355899341,"grp":"A"},{"x":"Dec","y":4838.51830870844,"grp":"A"},{"x":"May","y":4496.75630079582,"grp":"A"},{"x":"Feb","y":1812.61386582628,"grp":"A"},{"x":"Aug","y":2685.65677339211,"grp":"A"},{"x":"Feb","y":9396.65529388003,"grp":"A"},{"x":"Feb","y":1983.96654985845,"grp":"A"},{"x":"Jul","y":5826.73136959784,"grp":"A"},{"x":"Jul","y":6265.52276010625,"grp":"A"},{"x":"Apr","y":2611.00010271184,"grp":"A"},{"x":"Sep","y":1822.24326441064,"grp":"A"},{"x":"Jan","y":3916.00560769439,"grp":"A"},{"x":"Jul","y":6737.95927548781,"grp":"A"},{"x":"Mar","y":5678.17632644437,"grp":"A"},{"x":"Jul","y":4929.25310204737,"grp":"A"},{"x":"Nov","y":7330.44170564972,"grp":"A"},{"x":"Aug","y":2748.79529257305,"grp":"A"},{"x":"Aug","y":5479.11811852828,"grp":"A"},{"x":"Jul","y":9591.91328310408,"grp":"A"},{"x":"Jun","y":5051.1698324699,"grp":"A"},{"x":"Jul","y":9856.63636401296,"grp":"A"},{"x":"Apr","y":4232.12776146829,"grp":"A"},{"x":"Nov","y":7484.19150244445,"grp":"A"},{"x":"Feb","y":7508.59652622603,"grp":"A"},{"x":"Aug","y":7538.80255832337,"grp":"A"},{"x":"Nov","y":5152.45367423631,"grp":"A"},{"x":"Nov","y":7383.03365954198,"grp":"A"},{"x":"Dec","y":2524.37636675313,"grp":"A"},{"x":"Apr","y":1589.85326811671,"grp":"A"},{"x":"Aug","y":7198.61935102381,"grp":"A"},{"x":"Jul","y":4439.55808039755,"grp":"A"},{"x":"May","y":1648.33042863756,"grp":"A"},{"x":"Nov","y":4313.11259511858,"grp":"A"},{"x":"Aug","y":2852.43253805675,"grp":"A"},{"x":"Jul","y":3479.84169865958,"grp":"A"},{"x":"Dec","y":3750.24170218967,"grp":"A"},{"x":"Oct","y":8588.61453365535,"grp":"A"},{"x":"Sep","y":6152.21659955569,"grp":"A"},{"x":"Feb","y":3776.06375166215,"grp":"A"},{"x":"Jan","y":3537.79207332991,"grp":"A"},{"x":"Jun","y":1152.80393674038,"grp":"A"},{"x":"May","y":1177.77951876633,"grp":"A"},{"x":"Feb","y":9981.56975815073,"grp":"A"},{"x":"Aug","y":4735.86931684986,"grp":"A"},{"x":"May","y":9099.88968493417,"grp":"A"},{"x":"Jul","y":7810.82639214583,"grp":"A"},{"x":"May","y":1450.82343439572,"grp":"A"},{"x":"Apr","y":8698.34263157099,"grp":"A"},{"x":"Feb","y":3226.5532813035,"grp":"A"},{"x":"Apr","y":6269.5468950551,"grp":"A"},{"x":"Apr","y":1305.99635792896,"grp":"A"},{"x":"Nov","y":1916.29302292131,"grp":"A"},{"x":"May","y":1631.49502407759,"grp":"A"},{"x":"Feb","y":3698.26056272723,"grp":"A"},{"x":"May","y":6251.29424897023,"grp":"A"},{"x":"Mar","y":8883.91938642599,"grp":"A"},{"x":"May","y":6891.19853475131,"grp":"A"},{"x":"Oct","y":2566.69836654328,"grp":"A"},{"x":"Oct","y":4288.50203030743,"grp":"A"},{"x":"May","y":1199.24381468445,"grp":"A"},{"x":"Oct","y":5212.82926038839,"grp":"B"},{"x":"Oct","y":7731.12551728264,"grp":"B"},{"x":"Jun","y":5925.9648155421,"grp":"B"},{"x":"Apr","y":5079.74625914358,"grp":"B"},{"x":"Jul","y":3380.54850022309,"grp":"B"},{"x":"Oct","y":9169.34032202698,"grp":"B"},{"x":"Mar","y":5623.55200620368,"grp":"B"},{"x":"Jul","y":1196.81720552035,"grp":"B"},{"x":"Aug","y":9383.79871589132,"grp":"B"},{"x":"Oct","y":1643.71845615096,"grp":"B"},{"x":"Jul","y":7808.29846044071,"grp":"B"},{"x":"Dec","y":5463.27338577248,"grp":"B"},{"x":"Feb","y":8920.67077336833,"grp":"B"},{"x":"Mar","y":1635.93042758293,"grp":"B"},{"x":"Sep","y":2631.8836605642,"grp":"B"},{"x":"Aug","y":4926.65913561359,"grp":"B"},{"x":"Feb","y":1423.38110855781,"grp":"B"},{"x":"May","y":4534.86388805322,"grp":"B"},{"x":"Apr","y":8316.11033715308,"grp":"B"},{"x":"Dec","y":8301.67565634474,"grp":"B"},{"x":"Jul","y":7975.97228107043,"grp":"B"},{"x":"Jun","y":1707.48811797239,"grp":"B"},{"x":"Oct","y":7235.22614594549,"grp":"B"},{"x":"Apr","y":1724.52846635133,"grp":"B"},{"x":"Sep","y":7998.96545289084,"grp":"B"},{"x":"Dec","y":3713.01970491186,"grp":"B"},{"x":"Aug","y":5644.00144433603,"grp":"B"},{"x":"Feb","y":5127.02769692987,"grp":"B"},{"x":"Jun","y":3445.01599948853,"grp":"B"},{"x":"Jul","y":7310.82404777408,"grp":"B"},{"x":"Feb","y":1565.41256257333,"grp":"B"},{"x":"Jan","y":4853.10181230307,"grp":"B"},{"x":"Dec","y":9461.82741783559,"grp":"B"},{"x":"May","y":6140.40458691306,"grp":"B"},{"x":"Sep","y":9775.53343353793,"grp":"B"},{"x":"Sep","y":8564.7983700037,"grp":"B"},{"x":"Oct","y":1796.21594212949,"grp":"B"},{"x":"May","y":6946.55734859407,"grp":"B"},{"x":"May","y":3341.10873518512,"grp":"B"},{"x":"Nov","y":8128.7788937334,"grp":"B"},{"x":"Aug","y":1174.15066598915,"grp":"B"},{"x":"Aug","y":2399.57412006333,"grp":"B"},{"x":"Oct","y":2087.8025428392,"grp":"B"},{"x":"Oct","y":9287.56628464907,"grp":"B"},{"x":"Feb","y":5240.91815995052,"grp":"B"},{"x":"Mar","y":3123.43014613725,"grp":"B"},{"x":"May","y":6278.1779859215,"grp":"B"},{"x":"Nov","y":5116.57098983414,"grp":"B"},{"x":"Mar","y":6720.32077983022,"grp":"B"},{"x":"Jan","y":5685.29976019636,"grp":"B"},{"x":"Oct","y":3702.3653651122,"grp":"B"},{"x":"Apr","y":2814.04261896387,"grp":"B"},{"x":"Feb","y":4476.3873226475,"grp":"B"},{"x":"Dec","y":5455.57215390727,"grp":"B"},{"x":"Oct","y":3408.26979046687,"grp":"B"},{"x":"Jun","y":1937.63219797984,"grp":"B"},{"x":"Jul","y":7244.5813305676,"grp":"B"},{"x":"Jan","y":7799.74164580926,"grp":"B"},{"x":"Oct","y":7100.04555038176,"grp":"B"},{"x":"Feb","y":7425.49126804806,"grp":"B"},{"x":"Aug","y":1263.6552369222,"grp":"B"},{"x":"Apr","y":9690.31980191357,"grp":"B"},{"x":"Nov","y":2695.07787958719,"grp":"B"},{"x":"May","y":4030.91575857252,"grp":"B"},{"x":"May","y":5961.32107032463,"grp":"B"},{"x":"Jan","y":9814.74765203893,"grp":"B"},{"x":"May","y":6793.09231648222,"grp":"B"},{"x":"Oct","y":3044.15373923257,"grp":"B"},{"x":"Apr","y":5916.19319911115,"grp":"B"},{"x":"Jun","y":8310.42005377822,"grp":"B"},{"x":"Apr","y":6984.75376726128,"grp":"B"},{"x":"Apr","y":2472.51241886988,"grp":"B"},{"x":"Oct","y":1543.11250708997,"grp":"B"},{"x":"Apr","y":8522.69801707007,"grp":"B"},{"x":"Sep","y":9823.71097640134,"grp":"B"},{"x":"Aug","y":8707.80427055433,"grp":"B"},{"x":"Apr","y":2811.35521735996,"grp":"B"},{"x":"Oct","y":4773.4317346476,"grp":"B"},{"x":"Oct","y":6161.01899556816,"grp":"B"},{"x":"May","y":5217.31209917925,"grp":"B"},{"x":"Jun","y":3742.168412311,"grp":"B"},{"x":"Jul","y":2516.62864466198,"grp":"B"},{"x":"Mar","y":7048.77345706336,"grp":"B"},{"x":"Mar","y":2385.03169617616,"grp":"B"},{"x":"Jan","y":2596.03380179033,"grp":"B"},{"x":"Oct","y":3136.23089017347,"grp":"B"},{"x":"Mar","y":5413.99883409031,"grp":"B"},{"x":"Jul","y":9041.27673758194,"grp":"B"},{"x":"Jul","y":4094.71102710813,"grp":"B"},{"x":"Jun","y":6157.40475873463,"grp":"B"},{"x":"Nov","y":4027.99586602487,"grp":"B"},{"x":"Oct","y":9370.3612908721,"grp":"B"},{"x":"Jun","y":7903.11552979983,"grp":"B"},{"x":"Mar","y":4854.77002686821,"grp":"B"},{"x":"Jul","y":8072.06739578396,"grp":"B"},{"x":"Jun","y":7897.06020406447,"grp":"B"},{"x":"Jun","y":4332.03667774796,"grp":"B"},{"x":"Feb","y":7600.70328833535,"grp":"B"},{"x":"May","y":4802.09939624183,"grp":"B"},{"x":"Aug","y":8028.8721001707,"grp":"B"},{"x":"Sep","y":6304.0126459673,"grp":"B"},{"x":"Jul","y":2756.69280346483,"grp":"B"},{"x":"May","y":1297.4636957515,"grp":"B"},{"x":"Jan","y":3595.73369519785,"grp":"B"},{"x":"Sep","y":4426.03040742688,"grp":"B"},{"x":"Apr","y":3239.32753643021,"grp":"B"},{"x":"Jul","y":8091.68128389865,"grp":"B"},{"x":"May","y":5547.99926816486,"grp":"B"},{"x":"Aug","y":7667.95617155731,"grp":"B"},{"x":"Oct","y":9479.92060449906,"grp":"B"},{"x":"Aug","y":2693.43943754211,"grp":"B"},{"x":"Mar","y":3554.86903805286,"grp":"B"},{"x":"Oct","y":2218.36738567799,"grp":"B"},{"x":"Feb","y":9926.14685837179,"grp":"B"},{"x":"Sep","y":5952.34684529714,"grp":"B"},{"x":"Apr","y":6884.46082151495,"grp":"B"},{"x":"Sep","y":3436.75074307248,"grp":"B"},{"x":"Oct","y":1609.55080762506,"grp":"B"},{"x":"Aug","y":3885.45057200827,"grp":"B"},{"x":"Apr","y":8282.56664797664,"grp":"B"},{"x":"Jul","y":2211.95555035956,"grp":"B"},{"x":"Dec","y":6906.36002505198,"grp":"B"},{"x":"Jan","y":9638.98605131544,"grp":"B"},{"x":"Mar","y":1261.2991174683,"grp":"B"},{"x":"Apr","y":1005.39977080189,"grp":"B"},{"x":"Jun","y":1544.68429205008,"grp":"B"},{"x":"Aug","y":4531.88752243295,"grp":"B"},{"x":"Jul","y":5782.31709171087,"grp":"B"},{"x":"Dec","y":1909.74688436836,"grp":"B"},{"x":"Apr","y":3426.41356191598,"grp":"B"},{"x":"Sep","y":1284.207474906,"grp":"B"},{"x":"Apr","y":3904.21754634008,"grp":"B"},{"x":"Apr","y":3915.67852068692,"grp":"B"},{"x":"Sep","y":3173.71131409891,"grp":"B"},{"x":"Apr","y":6223.44111138955,"grp":"B"},{"x":"Jul","y":8312.92950338684,"grp":"B"},{"x":"May","y":2613.80026186816,"grp":"B"},{"x":"May","y":3170.55624420755,"grp":"B"},{"x":"Aug","y":3955.18786180764,"grp":"B"},{"x":"Mar","y":8091.93298197351,"grp":"B"},{"x":"Apr","y":3085.94895107672,"grp":"B"},{"x":"May","y":4007.6777995564,"grp":"B"},{"x":"Oct","y":8517.87713821977,"grp":"B"},{"x":"Mar","y":9497.97355593182,"grp":"B"},{"x":"Aug","y":2748.8673790358,"grp":"B"},{"x":"Nov","y":8168.0483405944,"grp":"B"},{"x":"Sep","y":4984.16622495279,"grp":"B"},{"x":"Feb","y":6122.59950512089,"grp":"B"},{"x":"Feb","y":5457.31997769326,"grp":"B"},{"x":"May","y":7483.9444605168,"grp":"B"},{"x":"Sep","y":1519.15311557241,"grp":"B"},{"x":"Dec","y":8418.23068447411,"grp":"B"},{"x":"Jan","y":8078.90600617975,"grp":"B"},{"x":"Oct","y":2396.33614267223,"grp":"B"},{"x":"Dec","y":1052.26355511695,"grp":"B"},{"x":"Sep","y":3011.24409283511,"grp":"B"},{"x":"Jun","y":8890.19655808806,"grp":"B"},{"x":"Feb","y":3845.44710512273,"grp":"B"},{"x":"Feb","y":5844.64558796026,"grp":"B"},{"x":"Sep","y":3059.21077006496,"grp":"B"},{"x":"Nov","y":6500.75276731513,"grp":"B"},{"x":"Sep","y":7192.64573627152,"grp":"B"},{"x":"Apr","y":6381.47949636914,"grp":"B"},{"x":"Sep","y":4356.23654187657,"grp":"B"},{"x":"Oct","y":1277.95524778776,"grp":"B"},{"x":"Feb","y":5462.04018150456,"grp":"B"},{"x":"Jan","y":1829.74410383031,"grp":"B"},{"x":"May","y":2374.58397448063,"grp":"B"},{"x":"Oct","y":6396.16030128673,"grp":"B"},{"x":"Nov","y":9976.46259120665,"grp":"B"},{"x":"Nov","y":2186.64111942053,"grp":"B"},{"x":"Jun","y":2246.00350321271,"grp":"B"},{"x":"Jan","y":3094.58780777641,"grp":"B"},{"x":"Nov","y":7388.7952058576,"grp":"B"},{"x":"Jan","y":3587.27659797296,"grp":"B"},{"x":"Apr","y":3348.8030792214,"grp":"B"},{"x":"Apr","y":6878.98117327131,"grp":"B"},{"x":"Sep","y":8181.20788247325,"grp":"B"},{"x":"Jul","y":8868.73046634719,"grp":"B"},{"x":"Jul","y":3241.32615304552,"grp":"B"},{"x":"Apr","y":2265.52832941525,"grp":"B"},{"x":"Apr","y":3964.70465580933,"grp":"B"},{"x":"Jul","y":8342.95695065521,"grp":"B"},{"x":"Sep","y":2829.28102789447,"grp":"B"},{"x":"Apr","y":3305.96734001301,"grp":"B"},{"x":"Apr","y":6634.65315289795,"grp":"B"},{"x":"Oct","y":9756.46042334847,"grp":"B"},{"x":"Apr","y":3491.79570074193,"grp":"B"},{"x":"Feb","y":1796.27917101607,"grp":"B"},{"x":"May","y":5198.94207082689,"grp":"B"},{"x":"Nov","y":2076.91609766334,"grp":"B"},{"x":"Aug","y":4459.91232106462,"grp":"B"},{"x":"May","y":9713.36505259387,"grp":"B"},{"x":"Apr","y":2665.61392461881,"grp":"B"},{"x":"Oct","y":5236.80702713318,"grp":"B"},{"x":"Jun","y":6168.4768483974,"grp":"B"},{"x":"Jul","y":9409.09634949639,"grp":"B"},{"x":"May","y":7283.70646410622,"grp":"B"},{"x":"Jun","y":9125.82906638272,"grp":"B"},{"x":"Mar","y":8851.94365796633,"grp":"B"},{"x":"Mar","y":7739.169011591,"grp":"C"},{"x":"Nov","y":2881.2291782815,"grp":"C"},{"x":"Nov","y":9993.44105389901,"grp":"C"},{"x":"Apr","y":1087.65632356517,"grp":"C"},{"x":"Jun","y":4853.89207699336,"grp":"C"},{"x":"Jul","y":9614.14673388936,"grp":"C"},{"x":"Nov","y":8061.43433554098,"grp":"C"},{"x":"May","y":8790.61384662054,"grp":"C"},{"x":"Nov","y":5915.66028818488,"grp":"C"},{"x":"May","y":6234.05614006333,"grp":"C"},{"x":"Aug","y":2128.20168584585,"grp":"C"},{"x":"Jan","y":2083.79540010355,"grp":"C"},{"x":"Sep","y":3715.446094051,"grp":"C"},{"x":"Feb","y":3144.0864643082,"grp":"C"},{"x":"Apr","y":9106.64429189637,"grp":"C"},{"x":"Apr","y":2861.44157731906,"grp":"C"},{"x":"Aug","y":6340.73024964891,"grp":"C"},{"x":"Oct","y":8102.78844553977,"grp":"C"},{"x":"Jul","y":9618.74704714864,"grp":"C"},{"x":"Oct","y":8741.6341137141,"grp":"C"},{"x":"Mar","y":4414.26709992811,"grp":"C"},{"x":"Jul","y":7071.3843239937,"grp":"C"},{"x":"Oct","y":9753.75049118884,"grp":"C"},{"x":"Mar","y":2622.28549295105,"grp":"C"},{"x":"Oct","y":4733.93312026747,"grp":"C"},{"x":"Feb","y":1971.35790856555,"grp":"C"},{"x":"Jan","y":4349.64511799626,"grp":"C"},{"x":"Apr","y":1343.42582826503,"grp":"C"},{"x":"Oct","y":5177.25127283484,"grp":"C"},{"x":"Aug","y":3567.33808713034,"grp":"C"},{"x":"Aug","y":1090.96775995567,"grp":"C"},{"x":"Feb","y":4310.36834325641,"grp":"C"},{"x":"Jun","y":8931.82835215703,"grp":"C"},{"x":"Aug","y":4219.54901423305,"grp":"C"},{"x":"Jul","y":8184.8623000551,"grp":"C"},{"x":"Oct","y":7229.79722707532,"grp":"C"},{"x":"Jul","y":1844.6643021889,"grp":"C"},{"x":"Sep","y":4101.18928691372,"grp":"C"},{"x":"Nov","y":3031.1250241939,"grp":"C"},{"x":"Nov","y":6384.3062450178,"grp":"C"},{"x":"Jul","y":4670.22559139878,"grp":"C"},{"x":"Oct","y":6351.37866134755,"grp":"C"},{"x":"Mar","y":2709.28390417248,"grp":"C"},{"x":"Jul","y":6791.43432993442,"grp":"C"},{"x":"Sep","y":8315.61043835245,"grp":"C"},{"x":"Aug","y":6339.30582064204,"grp":"C"},{"x":"Sep","y":8365.07961573079,"grp":"C"},{"x":"Sep","y":1015.34850103781,"grp":"C"},{"x":"Apr","y":1556.72588292509,"grp":"C"},{"x":"Jan","y":5896.93844411522,"grp":"C"},{"x":"Oct","y":5854.86519197002,"grp":"C"},{"x":"Jul","y":5171.72366124578,"grp":"C"},{"x":"Sep","y":7330.82539984025,"grp":"C"},{"x":"May","y":6356.62373155355,"grp":"C"},{"x":"Nov","y":5618.78156964667,"grp":"C"},{"x":"Jun","y":8664.96962727979,"grp":"C"},{"x":"Feb","y":1423.1943807099,"grp":"C"},{"x":"Feb","y":1552.20572161488,"grp":"C"},{"x":"Dec","y":5286.06706345454,"grp":"C"},{"x":"Sep","y":5768.37798254564,"grp":"C"},{"x":"Aug","y":4012.43681786582,"grp":"C"},{"x":"Dec","y":4771.26278309152,"grp":"C"},{"x":"Jul","y":1813.17572365515,"grp":"C"},{"x":"Feb","y":8789.7583078593,"grp":"C"},{"x":"Jun","y":9033.14634179696,"grp":"C"},{"x":"Oct","y":3822.11152417585,"grp":"C"},{"x":"Aug","y":1501.94691447541,"grp":"C"},{"x":"Apr","y":8792.9190963041,"grp":"C"},{"x":"May","y":4911.94812441245,"grp":"C"},{"x":"Dec","y":8281.65342705324,"grp":"C"},{"x":"Jul","y":3018.71253619902,"grp":"C"},{"x":"Aug","y":1432.14598717168,"grp":"C"},{"x":"Oct","y":9526.80590515956,"grp":"C"},{"x":"Apr","y":2917.55315312184,"grp":"C"},{"x":"Aug","y":8355.83414393477,"grp":"C"},{"x":"Sep","y":5088.82829011418,"grp":"C"},{"x":"Nov","y":4240.00759911723,"grp":"C"},{"x":"Nov","y":7462.5520624686,"grp":"C"},{"x":"Jul","y":8912.26796992123,"grp":"C"},{"x":"Oct","y":8071.90416869707,"grp":"C"},{"x":"Apr","y":2617.54995025694,"grp":"C"},{"x":"Jul","y":3296.08344379812,"grp":"C"},{"x":"Feb","y":1333.97177490406,"grp":"C"},{"x":"Jul","y":6869.25723520108,"grp":"C"},{"x":"Jan","y":6065.04012946971,"grp":"C"},{"x":"Nov","y":9218.72003306635,"grp":"C"},{"x":"Jan","y":5734.37173594721,"grp":"C"},{"x":"Aug","y":7832.61041156948,"grp":"C"},{"x":"Apr","y":4114.42719958723,"grp":"C"},{"x":"Nov","y":1177.90599749424,"grp":"C"},{"x":"Aug","y":9072.91303458624,"grp":"C"},{"x":"Mar","y":4752.43253377266,"grp":"C"},{"x":"Nov","y":7197.40515900776,"grp":"C"},{"x":"May","y":7774.49647244066,"grp":"C"},{"x":"Feb","y":6072.54337030463,"grp":"C"},{"x":"Oct","y":9764.92828712799,"grp":"C"},{"x":"Jan","y":3858.17031445913,"grp":"C"},{"x":"Sep","y":5616.70567188412,"grp":"C"},{"x":"Aug","y":3869.23128762282,"grp":"C"},{"x":"Jan","y":3142.12107565254,"grp":"C"},{"x":"Oct","y":9237.20355657861,"grp":"C"},{"x":"Apr","y":8299.02535723522,"grp":"C"},{"x":"Sep","y":7480.00130732544,"grp":"C"},{"x":"Nov","y":9330.63042652793,"grp":"C"},{"x":"Nov","y":2493.4843450319,"grp":"C"},{"x":"Jul","y":6748.45695123076,"grp":"C"},{"x":"May","y":3176.99355632067,"grp":"C"},{"x":"May","y":3858.10966510326,"grp":"C"},{"x":"Mar","y":1837.12374931201,"grp":"C"},{"x":"Jun","y":6220.26311070658,"grp":"C"},{"x":"Dec","y":9376.83135736734,"grp":"C"},{"x":"Apr","y":7045.95248773694,"grp":"C"},{"x":"May","y":7497.31838842854,"grp":"C"},{"x":"Sep","y":6961.06386859901,"grp":"C"},{"x":"Feb","y":1880.07321418263,"grp":"C"},{"x":"Jul","y":3528.0400684569,"grp":"C"},{"x":"Feb","y":9889.01256723329,"grp":"C"},{"x":"Jan","y":7349.12688517943,"grp":"C"},{"x":"May","y":9133.40007280931,"grp":"C"},{"x":"Nov","y":6785.2194965817,"grp":"C"},{"x":"Jun","y":9365.17883976921,"grp":"C"},{"x":"Apr","y":1045.84482358769,"grp":"C"},{"x":"Sep","y":1935.73495210148,"grp":"C"},{"x":"Jul","y":5281.76854480989,"grp":"C"},{"x":"Mar","y":1262.07744004205,"grp":"C"},{"x":"May","y":1957.29071763344,"grp":"C"},{"x":"Mar","y":5077.79494998977,"grp":"C"},{"x":"Mar","y":5849.99590134248,"grp":"C"},{"x":"Nov","y":2704.20465315692,"grp":"C"},{"x":"Mar","y":8839.40965961665,"grp":"C"},{"x":"Feb","y":7901.85930882581,"grp":"C"},{"x":"Aug","y":4338.3530494757,"grp":"C"},{"x":"Jan","y":4488.51451999508,"grp":"C"},{"x":"Mar","y":4817.26664490998,"grp":"C"},{"x":"Aug","y":4280.25101684034,"grp":"C"},{"x":"Jun","y":8204.23576794565,"grp":"C"},{"x":"Apr","y":8820.30658354051,"grp":"C"},{"x":"Apr","y":2544.70534645952,"grp":"C"},{"x":"Jan","y":9116.85112398118,"grp":"C"},{"x":"Mar","y":9392.83182378858,"grp":"C"},{"x":"Mar","y":7298.14774356782,"grp":"C"},{"x":"Oct","y":9511.09612733126,"grp":"C"},{"x":"Nov","y":6387.68670218997,"grp":"C"},{"x":"May","y":8773.27622147277,"grp":"C"},{"x":"Nov","y":7687.01174319722,"grp":"C"},{"x":"Nov","y":1040.45388940722,"grp":"C"},{"x":"May","y":8068.35494190454,"grp":"C"},{"x":"May","y":2086.05034998618,"grp":"C"},{"x":"Sep","y":1907.95680112205,"grp":"C"},{"x":"Jan","y":2282.29459794238,"grp":"C"},{"x":"Oct","y":8030.38966259919,"grp":"C"},{"x":"Feb","y":3314.37819427811,"grp":"C"},{"x":"Sep","y":4313.43163759448,"grp":"C"},{"x":"May","y":7889.26598336548,"grp":"C"},{"x":"Jul","y":9475.507553434,"grp":"C"},{"x":"Jul","y":1796.63848434575,"grp":"C"},{"x":"Apr","y":6627.9747185763,"grp":"C"},{"x":"Apr","y":9034.16080982424,"grp":"C"},{"x":"Apr","y":7968.30475702882,"grp":"C"},{"x":"Sep","y":7739.85932418145,"grp":"C"},{"x":"Feb","y":5284.95733719319,"grp":"C"},{"x":"Nov","y":4751.83738931082,"grp":"C"},{"x":"Sep","y":5217.18075266108,"grp":"C"},{"x":"Mar","y":6406.26968326978,"grp":"C"},{"x":"Jan","y":8747.51167814247,"grp":"C"},{"x":"Apr","y":7615.06166239269,"grp":"C"},{"x":"Aug","y":5490.79178576358,"grp":"C"},{"x":"Nov","y":6384.02496092021,"grp":"C"},{"x":"Aug","y":8236.84940114617,"grp":"C"},{"x":"Aug","y":3459.46413534693,"grp":"C"},{"x":"Nov","y":1779.73550697789,"grp":"C"},{"x":"Oct","y":2101.05983447284,"grp":"C"},{"x":"Jun","y":3377.49318545684,"grp":"C"},{"x":"Aug","y":1648.41684815474,"grp":"C"},{"x":"Jul","y":2049.88746065646,"grp":"C"},{"x":"Jun","y":7767.89903454483,"grp":"C"},{"x":"Jul","y":2382.96547112986,"grp":"C"},{"x":"Nov","y":6836.8439944461,"grp":"C"},{"x":"Jun","y":4630.08715491742,"grp":"C"},{"x":"Feb","y":1987.3721296899,"grp":"C"},{"x":"Mar","y":9650.39722668007,"grp":"C"},{"x":"Oct","y":5281.03022486903,"grp":"C"},{"x":"Oct","y":1105.34436255693,"grp":"C"},{"x":"Oct","y":3604.25719805062,"grp":"C"},{"x":"Apr","y":4886.60778710619,"grp":"C"},{"x":"Feb","y":4465.75867547654,"grp":"C"},{"x":"Dec","y":3027.86791091785,"grp":"C"},{"x":"Aug","y":3201.07263512909,"grp":"C"},{"x":"Mar","y":5308.35272930563,"grp":"C"},{"x":"Apr","y":6710.54137032479,"grp":"C"},{"x":"Oct","y":3875.98576257005,"grp":"C"},{"x":"Mar","y":5126.08357402496,"grp":"C"},{"x":"Nov","y":5733.3581186831,"grp":"C"},{"x":"Jul","y":6851.03777726181,"grp":"C"},{"x":"Nov","y":7709.14234803058,"grp":"C"},{"x":"Oct","y":8898.07425625622,"grp":"C"},{"x":"Oct","y":6697.09547329694,"grp":"C"},{"x":"Oct","y":3333.55778036639,"grp":"C"},{"x":"Oct","y":2170.61492893845,"grp":"C"},{"x":"Sep","y":8353.38887036778,"grp":"C"},{"x":"Aug","y":6645.58331808075,"grp":"D"},{"x":"Dec","y":5778.44939031638,"grp":"D"},{"x":"Feb","y":9532.64111583121,"grp":"D"},{"x":"Apr","y":3205.16573428176,"grp":"D"},{"x":"Jul","y":6691.90915394574,"grp":"D"},{"x":"Feb","y":3602.14953287505,"grp":"D"},{"x":"Apr","y":7250.24219136685,"grp":"D"},{"x":"Apr","y":2920.53698282689,"grp":"D"},{"x":"May","y":6668.73619658872,"grp":"D"},{"x":"Mar","y":1320.53892430849,"grp":"D"},{"x":"Nov","y":8787.94430894777,"grp":"D"},{"x":"Jan","y":4354.67601171695,"grp":"D"},{"x":"Feb","y":7975.78769689426,"grp":"D"},{"x":"Mar","y":8625.87661948055,"grp":"D"},{"x":"Feb","y":2596.29014343955,"grp":"D"},{"x":"Mar","y":4087.98863599077,"grp":"D"},{"x":"Aug","y":8124.751602998,"grp":"D"},{"x":"Aug","y":4808.52280906402,"grp":"D"},{"x":"Oct","y":3583.22714548558,"grp":"D"},{"x":"Aug","y":1054.73253061064,"grp":"D"},{"x":"Apr","y":8816.00626907311,"grp":"D"},{"x":"Mar","y":1691.10130448826,"grp":"D"},{"x":"Nov","y":5481.46671312861,"grp":"D"},{"x":"Jun","y":4521.49378857575,"grp":"D"},{"x":"Feb","y":7229.9571998883,"grp":"D"},{"x":"Jul","y":6325.26804809459,"grp":"D"},{"x":"Jun","y":6915.10580130853,"grp":"D"},{"x":"May","y":6625.47430256382,"grp":"D"},{"x":"Mar","y":5881.49484200403,"grp":"D"},{"x":"Mar","y":9773.65800784901,"grp":"D"},{"x":"Jun","y":6955.33629413694,"grp":"D"},{"x":"Jul","y":9735.73113651946,"grp":"D"},{"x":"Oct","y":4406.2937956769,"grp":"D"},{"x":"Apr","y":1484.56745105796,"grp":"D"},{"x":"Mar","y":5648.80282059312,"grp":"D"},{"x":"Nov","y":3080.67329740152,"grp":"D"},{"x":"Jan","y":6511.38282683678,"grp":"D"},{"x":"Oct","y":1261.85285742395,"grp":"D"},{"x":"Aug","y":8666.22988204472,"grp":"D"},{"x":"May","y":2623.70228185318,"grp":"D"},{"x":"Jun","y":7713.46448478289,"grp":"D"},{"x":"Mar","y":7423.0878893286,"grp":"D"},{"x":"Dec","y":5477.19072503969,"grp":"D"},{"x":"Jun","y":1863.025221508,"grp":"D"},{"x":"Sep","y":2671.19580693543,"grp":"D"},{"x":"May","y":5129.08171373419,"grp":"D"},{"x":"Feb","y":5008.39575682767,"grp":"D"},{"x":"Jul","y":9473.99979573675,"grp":"D"},{"x":"Oct","y":9274.71939194947,"grp":"D"},{"x":"Nov","y":5606.75884014927,"grp":"D"},{"x":"Sep","y":6679.91689266637,"grp":"D"},{"x":"Jul","y":7094.16992217302,"grp":"D"},{"x":"Apr","y":5103.55579061434,"grp":"D"},{"x":"Oct","y":4153.38903898373,"grp":"D"},{"x":"Oct","y":4493.67617350072,"grp":"D"},{"x":"Sep","y":3121.92731280811,"grp":"D"},{"x":"Nov","y":7792.98373637721,"grp":"D"},{"x":"Oct","y":5123.44945198856,"grp":"D"},{"x":"Mar","y":3896.74208522774,"grp":"D"},{"x":"Sep","y":2400.14223917387,"grp":"D"},{"x":"Jun","y":3956.95728994906,"grp":"D"},{"x":"Nov","y":9556.36063194834,"grp":"D"},{"x":"Nov","y":7270.74185176753,"grp":"D"},{"x":"Jul","y":6363.6864174623,"grp":"D"},{"x":"Mar","y":1978.22460462339,"grp":"D"},{"x":"May","y":7763.3529920131,"grp":"D"},{"x":"Jan","y":9271.72505133785,"grp":"D"},{"x":"Mar","y":6428.90872806311,"grp":"D"},{"x":"Mar","y":4422.68598615192,"grp":"D"},{"x":"May","y":6715.66574531607,"grp":"D"},{"x":"Jan","y":2033.39555067942,"grp":"D"},{"x":"Dec","y":4442.31118983589,"grp":"D"},{"x":"Dec","y":4687.58824490942,"grp":"D"},{"x":"May","y":1017.78738759458,"grp":"D"},{"x":"Oct","y":9640.35697863437,"grp":"D"},{"x":"Nov","y":2979.78051542304,"grp":"D"},{"x":"May","y":8801.26209696755,"grp":"D"},{"x":"Sep","y":9254.19082655571,"grp":"D"},{"x":"Dec","y":9884.81299066916,"grp":"D"},{"x":"Sep","y":7143.8900725916,"grp":"D"},{"x":"Mar","y":9248.55117197149,"grp":"D"},{"x":"Sep","y":9024.96487926692,"grp":"D"},{"x":"Feb","y":8524.02323577553,"grp":"D"},{"x":"May","y":1872.89974256419,"grp":"D"},{"x":"Mar","y":5620.6397684291,"grp":"D"},{"x":"Oct","y":4775.25244955905,"grp":"D"},{"x":"Jun","y":8168.8039964065,"grp":"D"},{"x":"Apr","y":6728.41144748963,"grp":"D"},{"x":"Aug","y":2486.83281452395,"grp":"D"},{"x":"Feb","y":1696.01640640758,"grp":"D"},{"x":"May","y":4409.38569954596,"grp":"D"},{"x":"Jun","y":5556.28901650198,"grp":"D"},{"x":"Nov","y":6208.91491486691,"grp":"D"},{"x":"Sep","y":8323.33025918342,"grp":"D"},{"x":"Jul","y":1068.95553902723,"grp":"D"},{"x":"Oct","y":8754.33709123172,"grp":"D"},{"x":"Aug","y":6753.79916350357,"grp":"D"},{"x":"Jun","y":2977.1818802692,"grp":"D"},{"x":"Mar","y":6615.71653722785,"grp":"D"},{"x":"Oct","y":4237.01170575805,"grp":"D"},{"x":"Aug","y":1112.62059421279,"grp":"D"},{"x":"Jan","y":2532.75795141235,"grp":"D"},{"x":"May","y":6760.99952217191,"grp":"D"},{"x":"Feb","y":4155.00536956824,"grp":"D"},{"x":"Nov","y":1099.9862938188,"grp":"D"},{"x":"Jan","y":8597.30335907079,"grp":"D"},{"x":"May","y":6230.10767064989,"grp":"D"},{"x":"Oct","y":4706.36994414963,"grp":"D"},{"x":"Mar","y":1006.12991419621,"grp":"D"},{"x":"Apr","y":1259.24034183845,"grp":"D"},{"x":"Aug","y":8981.70349234715,"grp":"D"},{"x":"Feb","y":5331.55758189969,"grp":"D"},{"x":"Feb","y":4603.34959835745,"grp":"D"},{"x":"Jul","y":7499.64544991963,"grp":"D"},{"x":"Jan","y":3949.01263713837,"grp":"D"},{"x":"Nov","y":8815.90377097018,"grp":"D"},{"x":"Sep","y":3490.53883017041,"grp":"D"},{"x":"Nov","y":2946.28027384169,"grp":"D"},{"x":"Feb","y":2124.67362545431,"grp":"D"},{"x":"Mar","y":3840.71500739083,"grp":"D"},{"x":"Jul","y":3828.10948207043,"grp":"D"},{"x":"May","y":4462.51504449174,"grp":"D"},{"x":"Jul","y":1002.60683265515,"grp":"D"},{"x":"Aug","y":9707.43854204193,"grp":"D"},{"x":"Sep","y":5104.98517123051,"grp":"D"},{"x":"Jul","y":1879.05689585023,"grp":"D"},{"x":"Feb","y":7763.18797958083,"grp":"D"},{"x":"Sep","y":7401.25775057822,"grp":"D"},{"x":"Jan","y":3160.62031732872,"grp":"D"},{"x":"Apr","y":1832.07793161273,"grp":"D"},{"x":"Jun","y":6509.83095518313,"grp":"D"},{"x":"Aug","y":9728.30661851913,"grp":"D"},{"x":"Jul","y":2307.34105315059,"grp":"D"},{"x":"Apr","y":7908.66046468727,"grp":"D"},{"x":"Apr","y":7302.44546802714,"grp":"D"},{"x":"Sep","y":3980.85113079287,"grp":"D"},{"x":"Aug","y":9093.45557051711,"grp":"D"},{"x":"Apr","y":5120.72348315269,"grp":"D"},{"x":"Apr","y":9387.20567245036,"grp":"D"},{"x":"Jun","y":2479.16878154501,"grp":"D"},{"x":"Feb","y":4532.77817298658,"grp":"D"},{"x":"Apr","y":4306.49698106572,"grp":"D"},{"x":"Jan","y":6982.79181099497,"grp":"D"},{"x":"Nov","y":2557.03083449043,"grp":"D"},{"x":"Sep","y":2233.81898831576,"grp":"D"},{"x":"Aug","y":8825.95846941695,"grp":"D"},{"x":"Oct","y":8146.71927411109,"grp":"D"},{"x":"Oct","y":3079.01721354574,"grp":"D"},{"x":"Dec","y":2566.05068221688,"grp":"D"},{"x":"Mar","y":1240.8848120831,"grp":"D"},{"x":"Aug","y":7005.31393662095,"grp":"D"},{"x":"Aug","y":3076.08496607281,"grp":"D"},{"x":"Nov","y":7965.08686686866,"grp":"D"},{"x":"Aug","y":1923.54137217626,"grp":"D"},{"x":"Mar","y":1285.58914992027,"grp":"D"},{"x":"Jun","y":6871.21140048839,"grp":"D"},{"x":"May","y":7221.99976467527,"grp":"D"},{"x":"Apr","y":3780.9702642262,"grp":"D"},{"x":"Feb","y":6027.18075551093,"grp":"D"},{"x":"Feb","y":3686.6941084154,"grp":"D"},{"x":"Jul","y":2784.45542696863,"grp":"D"},{"x":"Jan","y":6875.1608338207,"grp":"D"},{"x":"Jul","y":5673.75988699496,"grp":"D"},{"x":"Mar","y":8608.11503347941,"grp":"D"},{"x":"Apr","y":6380.03588537686,"grp":"D"},{"x":"Sep","y":6872.81393655576,"grp":"D"},{"x":"Aug","y":6028.07583590038,"grp":"D"},{"x":"Dec","y":2800.63979863189,"grp":"D"},{"x":"Oct","y":1759.09808161668,"grp":"D"},{"x":"Dec","y":5836.2257189583,"grp":"D"},{"x":"Nov","y":1763.45142628998,"grp":"D"},{"x":"Sep","y":8440.43042324483,"grp":"D"},{"x":"Aug","y":3781.32018563338,"grp":"D"},{"x":"Jul","y":4198.68940766901,"grp":"D"},{"x":"Feb","y":2777.25042472593,"grp":"D"},{"x":"May","y":7453.05464114062,"grp":"D"},{"x":"Mar","y":1334.75530892611,"grp":"D"},{"x":"Nov","y":2560.30962546356,"grp":"D"},{"x":"Apr","y":2812.31720000505,"grp":"D"},{"x":"Oct","y":8068.40630620718,"grp":"D"},{"x":"May","y":4395.84278617986,"grp":"D"},{"x":"Feb","y":8284.61022092961,"grp":"D"},{"x":"May","y":3348.78766280599,"grp":"D"},{"x":"Apr","y":1131.24449574389,"grp":"D"},{"x":"Oct","y":1650.55695758201,"grp":"D"},{"x":"Aug","y":3217.58191869594,"grp":"D"},{"x":"Oct","y":5603.85646158829,"grp":"D"},{"x":"Sep","y":6767.63764163479,"grp":"D"},{"x":"Mar","y":5464.27016798407,"grp":"D"},{"x":"Oct","y":1222.84607635811,"grp":"D"},{"x":"Oct","y":7660.48604552634,"grp":"D"},{"x":"Nov","y":9656.36938507669,"grp":"D"},{"x":"Oct","y":4096.27613169141,"grp":"D"},{"x":"Mar","y":5127.58351978846,"grp":"D"},{"x":"May","y":3115.32586417161,"grp":"D"},{"x":"Aug","y":9632.73517787457,"grp":"D"},{"x":"Nov","y":8526.93688380532,"grp":"D"},{"x":"Jun","y":5807.99579806626,"grp":"D"},{"x":"Feb","y":5738.48305316642,"grp":"D"},{"x":"Nov","y":6156.33860998787,"grp":"D"},{"x":"Jun","y":1667.91713424027,"grp":"E"},{"x":"Apr","y":2617.36494698562,"grp":"E"},{"x":"Jan","y":7934.14059956558,"grp":"E"},{"x":"Oct","y":1204.87183937803,"grp":"E"},{"x":"May","y":1764.1282712575,"grp":"E"},{"x":"Feb","y":4527.61033782735,"grp":"E"},{"x":"Oct","y":2315.82482997328,"grp":"E"},{"x":"Mar","y":5052.95947147533,"grp":"E"},{"x":"Sep","y":7128.32018453628,"grp":"E"},{"x":"Mar","y":4244.4634293206,"grp":"E"},{"x":"Jul","y":7187.69390066154,"grp":"E"},{"x":"Feb","y":5828.72015004978,"grp":"E"},{"x":"Nov","y":5641.30161865614,"grp":"E"},{"x":"Feb","y":4536.01627820171,"grp":"E"},{"x":"Oct","y":6124.84010728076,"grp":"E"},{"x":"Jul","y":8185.95395493321,"grp":"E"},{"x":"Nov","y":7260.3553913068,"grp":"E"},{"x":"Nov","y":3377.58960667998,"grp":"E"},{"x":"May","y":2068.88321903534,"grp":"E"},{"x":"Jul","y":3294.88574108109,"grp":"E"},{"x":"May","y":1771.52601955459,"grp":"E"},{"x":"Feb","y":5898.91020720825,"grp":"E"},{"x":"Dec","y":3675.38891592994,"grp":"E"},{"x":"Jan","y":5073.44790222123,"grp":"E"},{"x":"Aug","y":4745.50537904724,"grp":"E"},{"x":"Aug","y":4554.05504745431,"grp":"E"},{"x":"Feb","y":2268.75928067602,"grp":"E"},{"x":"Nov","y":9368.32317034714,"grp":"E"},{"x":"Sep","y":7506.53986912221,"grp":"E"},{"x":"Dec","y":9015.70070534945,"grp":"E"},{"x":"May","y":2003.70488828048,"grp":"E"},{"x":"Nov","y":4697.25294387899,"grp":"E"},{"x":"Oct","y":8957.82865537331,"grp":"E"},{"x":"Jun","y":4691.17613113485,"grp":"E"},{"x":"Apr","y":9963.45166466199,"grp":"E"},{"x":"Feb","y":9656.78450302221,"grp":"E"},{"x":"Feb","y":6629.20384295285,"grp":"E"},{"x":"Oct","y":2370.31652336009,"grp":"E"},{"x":"Jan","y":3543.66658255458,"grp":"E"},{"x":"Aug","y":1526.85446478426,"grp":"E"},{"x":"Dec","y":5098.71370973997,"grp":"E"},{"x":"Jul","y":2166.50144499727,"grp":"E"},{"x":"Aug","y":8272.87441026419,"grp":"E"},{"x":"Mar","y":5633.65441863425,"grp":"E"},{"x":"Nov","y":3167.35835745931,"grp":"E"},{"x":"Nov","y":1126.6210693866,"grp":"E"},{"x":"May","y":2125.70374039933,"grp":"E"},{"x":"Aug","y":8033.69393455796,"grp":"E"},{"x":"Sep","y":1421.92895850167,"grp":"E"},{"x":"Sep","y":6320.2854488045,"grp":"E"},{"x":"Oct","y":3304.0466059465,"grp":"E"},{"x":"Sep","y":8003.44963069074,"grp":"E"},{"x":"Oct","y":5206.87448605895,"grp":"E"},{"x":"Feb","y":1010.38114842959,"grp":"E"},{"x":"May","y":9248.34501696751,"grp":"E"},{"x":"Jan","y":1200.80515160225,"grp":"E"},{"x":"Mar","y":6083.59875483438,"grp":"E"},{"x":"Jan","y":2885.21034969017,"grp":"E"},{"x":"Aug","y":6346.03709448129,"grp":"E"},{"x":"Mar","y":5049.65494386852,"grp":"E"},{"x":"Oct","y":4073.47991364077,"grp":"E"},{"x":"Dec","y":2854.24078907818,"grp":"E"},{"x":"Apr","y":1119.43856836297,"grp":"E"},{"x":"Sep","y":4071.91771548241,"grp":"E"},{"x":"Oct","y":3607.52522875555,"grp":"E"},{"x":"Sep","y":8652.78153331019,"grp":"E"},{"x":"Feb","y":8348.31982222386,"grp":"E"},{"x":"Jun","y":8452.19920831732,"grp":"E"},{"x":"Jan","y":6488.79895173013,"grp":"E"},{"x":"Nov","y":3913.70065137744,"grp":"E"},{"x":"Oct","y":7979.327253066,"grp":"E"},{"x":"Apr","y":1098.97815831937,"grp":"E"},{"x":"Mar","y":7070.98257937469,"grp":"E"},{"x":"Jan","y":1851.68051254004,"grp":"E"},{"x":"Oct","y":3399.63165670633,"grp":"E"},{"x":"Feb","y":7801.39460740611,"grp":"E"},{"x":"Jun","y":1892.52319862135,"grp":"E"},{"x":"Oct","y":1352.03677113168,"grp":"E"},{"x":"Aug","y":8875.84001338109,"grp":"E"},{"x":"Feb","y":3761.07493066229,"grp":"E"},{"x":"Jul","y":2971.74851689488,"grp":"E"},{"x":"Jul","y":3527.30983076617,"grp":"E"},{"x":"Jun","y":3833.76261685044,"grp":"E"},{"x":"Nov","y":7025.93108825386,"grp":"E"},{"x":"Aug","y":2679.01979596354,"grp":"E"},{"x":"Nov","y":3354.91438768804,"grp":"E"},{"x":"Sep","y":2599.18470587581,"grp":"E"},{"x":"Apr","y":6541.75243596546,"grp":"E"},{"x":"May","y":7853.4252922982,"grp":"E"},{"x":"Jul","y":3130.76027552597,"grp":"E"},{"x":"Sep","y":8131.43498683348,"grp":"E"},{"x":"Feb","y":8625.80711673945,"grp":"E"},{"x":"May","y":5267.88251823746,"grp":"E"},{"x":"Mar","y":8686.92737002857,"grp":"E"},{"x":"May","y":4004.68568853103,"grp":"E"},{"x":"Feb","y":9733.4797217045,"grp":"E"},{"x":"Mar","y":8125.51275314763,"grp":"E"},{"x":"Nov","y":1720.11883510277,"grp":"E"},{"x":"Feb","y":4950.62803220935,"grp":"E"},{"x":"Nov","y":9156.49508265778,"grp":"E"},{"x":"Oct","y":9944.39955684356,"grp":"E"},{"x":"Aug","y":3210.9442811925,"grp":"E"},{"x":"Mar","y":8655.92334303074,"grp":"E"},{"x":"Sep","y":4223.32727862522,"grp":"E"},{"x":"Jan","y":4515.60185756534,"grp":"E"},{"x":"Mar","y":8162.22274815664,"grp":"E"},{"x":"Feb","y":3569.91388578899,"grp":"E"},{"x":"Sep","y":6036.90937277861,"grp":"E"},{"x":"Nov","y":6216.03774512187,"grp":"E"},{"x":"May","y":4662.01892239042,"grp":"E"},{"x":"May","y":8741.14893143997,"grp":"E"},{"x":"Jun","y":8832.48283597641,"grp":"E"},{"x":"Mar","y":1662.79367916286,"grp":"E"},{"x":"Aug","y":9677.15980531648,"grp":"E"},{"x":"Nov","y":6706.82156342082,"grp":"E"},{"x":"Aug","y":9209.39581748098,"grp":"E"},{"x":"Jun","y":9679.51181763783,"grp":"E"},{"x":"Jul","y":3907.31205488555,"grp":"E"},{"x":"Feb","y":6788.42906770296,"grp":"E"},{"x":"Jan","y":5600.2310726326,"grp":"E"},{"x":"Sep","y":3154.04424699955,"grp":"E"},{"x":"Dec","y":5027.40100561641,"grp":"E"},{"x":"Jun","y":7569.96559421532,"grp":"E"},{"x":"Jul","y":2743.67769225501,"grp":"E"},{"x":"Jul","y":5562.81478283927,"grp":"E"},{"x":"Mar","y":4348.01225410774,"grp":"E"},{"x":"Oct","y":8526.34029975161,"grp":"E"},{"x":"Dec","y":6460.01851372421,"grp":"E"},{"x":"Mar","y":1253.2275961712,"grp":"E"},{"x":"Sep","y":7674.67500665225,"grp":"E"},{"x":"Sep","y":1762.35280185938,"grp":"E"},{"x":"Mar","y":6676.17493239231,"grp":"E"},{"x":"Dec","y":5871.043744497,"grp":"E"},{"x":"Mar","y":5533.82315230556,"grp":"E"},{"x":"Sep","y":1328.6977452226,"grp":"E"},{"x":"Jun","y":1403.72221800499,"grp":"E"},{"x":"Nov","y":5219.25522550009,"grp":"E"},{"x":"Dec","y":2702.20073498786,"grp":"E"},{"x":"May","y":8628.17792757414,"grp":"E"},{"x":"Sep","y":6022.88713818416,"grp":"E"},{"x":"Jul","y":4951.66407735087,"grp":"E"},{"x":"Mar","y":2472.33538678847,"grp":"E"},{"x":"Jan","y":5111.50614731014,"grp":"E"},{"x":"Jul","y":5259.80639318004,"grp":"E"},{"x":"Aug","y":8739.92647905834,"grp":"E"},{"x":"Feb","y":6252.95273005031,"grp":"E"},{"x":"Mar","y":3991.38720193878,"grp":"E"},{"x":"Oct","y":5573.14197905362,"grp":"E"},{"x":"Apr","y":7684.41202677786,"grp":"E"},{"x":"Feb","y":6247.51229654066,"grp":"E"},{"x":"Aug","y":7207.95973739587,"grp":"E"},{"x":"Mar","y":9949.11236991175,"grp":"E"},{"x":"Oct","y":5635.68443595432,"grp":"E"},{"x":"Jun","y":4448.82129877806,"grp":"E"},{"x":"Jul","y":4320.73067431338,"grp":"E"},{"x":"Apr","y":4050.31113885343,"grp":"E"},{"x":"Jun","y":6357.08819376305,"grp":"E"},{"x":"Jun","y":6492.00406367891,"grp":"E"},{"x":"Oct","y":3273.78984657116,"grp":"E"},{"x":"Aug","y":6331.88944985159,"grp":"E"},{"x":"Nov","y":3773.66637648083,"grp":"E"},{"x":"Jul","y":4726.60917253233,"grp":"E"},{"x":"Nov","y":7667.95203927904,"grp":"E"},{"x":"Jul","y":7743.42870316468,"grp":"E"},{"x":"May","y":9869.99780288897,"grp":"E"},{"x":"Apr","y":4249.44191938266,"grp":"E"},{"x":"Feb","y":4295.87542498484,"grp":"E"},{"x":"Feb","y":3199.48909874074,"grp":"E"},{"x":"Sep","y":6524.17960832827,"grp":"E"},{"x":"May","y":6605.59135326184,"grp":"E"},{"x":"Jul","y":8983.99357078597,"grp":"E"},{"x":"Oct","y":4522.71758415736,"grp":"E"},{"x":"Mar","y":3168.34831889719,"grp":"E"},{"x":"Jan","y":8284.75218941458,"grp":"E"},{"x":"Dec","y":1584.50073562562,"grp":"E"},{"x":"Feb","y":7801.8498159945,"grp":"E"},{"x":"Jul","y":8886.42183085904,"grp":"E"},{"x":"Sep","y":9932.86344502121,"grp":"E"},{"x":"Oct","y":1857.72674181499,"grp":"E"},{"x":"May","y":2575.64369705506,"grp":"E"},{"x":"Dec","y":7545.58470402844,"grp":"E"},{"x":"Sep","y":4925.56976689957,"grp":"E"},{"x":"Nov","y":9800.1908888109,"grp":"E"},{"x":"Sep","y":2319.34323860332,"grp":"E"},{"x":"Apr","y":8104.44170678966,"grp":"E"},{"x":"Aug","y":4846.79068764672,"grp":"E"},{"x":"Feb","y":2578.86216347106,"grp":"E"},{"x":"Oct","y":4604.28377613425,"grp":"E"},{"x":"Mar","y":7469.94729409926,"grp":"E"},{"x":"Jul","y":9229.81891129166,"grp":"E"},{"x":"Mar","y":1951.78483822383,"grp":"E"},{"x":"Apr","y":1462.0126967784,"grp":"E"},{"x":"Nov","y":6413.91441691667,"grp":"E"},{"x":"Sep","y":3294.85505912453,"grp":"E"},{"x":"Sep","y":9634.47078922763,"grp":"E"},{"x":"Aug","y":9220.00563680194,"grp":"E"},{"x":"May","y":1367.0146369841,"grp":"E"},{"x":"Oct","y":5697.60475656949,"grp":"E"},{"x":"Oct","y":8836.54288109392,"grp":"E"},{"x":"Sep","y":8416.51679482311,"grp":"E"}];
+  
+  return drawChart(opts,data);
+  
+  function drawChart(opts, data){ 
+    var subCharts = [];
+    
+    var c = null;
+    var assignedColors = {};
+    
+      //move this to top or make function since duplicated
+    //allow manipulation of default colors to use with dimple
+    if(opts.defaultColors.length) {
+      defaultColorsArray = [];
+      if (typeof(opts.defaultColors) == "function") {
+        //assume this is a d3 scale
+        //if there is a domain for the color scale given
+        //then we will need to assign colors with dimples assignColor
+        if( opts.defaultColors.domain().length > 0 ){
+          defaultColorsArray = opts.defaultColors.range();
+          opts.defaultColors.domain().forEach( function( d, i ) {
+            assignedColors[d] = new dimple.color(opts.defaultColors.range()[i])
+          })
+        } else {
+          for (var n=0;n<opts.defaultColors.range().length;n++) {
+            defaultColorsArray.push(opts.defaultColors(n));
+          };
+        }
+      } else {
+        defaultColorsArray = opts.defaultColors;
+      }
+  
+      
+      //if colors not assigned with no keys and opts.groups
+      if (!(Object.keys(assignedColors).length) & Boolean(opts.groups)) {
+        //let's just assign colors in order with each unique
+        //this is important if facetting where need colors assigned
+        //if not in all pairs
+        opts.groups = (typeof opts.groups == "string") ? [opts.groups] : opts.groups;
+        d3.set(
+          data.map(function(d){
+            //dimple colors by last item in groups
+            return d[opts.groups[opts.groups.length-1]]
+          })
+        ).values().forEach(function(u,i){
+          //u will be our uniqe and will pick color from defaultColorsArray
+          //console.log([u,defaultColorsArray[i]].concat());
+          assignedColors[u] = new dimple.color(defaultColorsArray[i % defaultColorsArray.length])
+        })
+      }
+    }
+  
+    
+    //do series
+    //set up a function since same for each
+    //as of now we have x,y,groups,data,type in opts for primary layer
+    //and other layers reside in opts.layers
+    function buildSeries(layer, hidden, myChart){
+      //inherit from primary layer if not intentionally changed or xAxis, yAxis, zAxis null
+      if (!layer.xAxis) layer.xAxis = opts.xAxis;    
+      if (!layer.yAxis) layer.yAxis = opts.yAxis;
+      if (!layer.zAxis) layer.zAxis = opts.zAxis;
+      
+      var x = buildAxis("x", layer, myChart);
+      x.hidden = hidden;
+      
+      var y = buildAxis("y", layer, myChart);
+      y.hidden = hidden;
+      
+      //z for bubbles
+      var z = null;
+      if (!(typeof(layer.zAxis) === 'undefined') && layer.zAxis.type){
+        z = buildAxis("z", layer, myChart);
+      };
+      
+      //here think I need to evaluate group and if missing do null
+      //as the group argument
+      //if provided need to use groups from layer
+      var s = new dimple.series(myChart, null, x, y, z, c, dimple.plot[layer.type], dimple.aggregateMethod.avg, dimple.plot[layer.type].stacked);
+      
+      //as of v1.1.4 dimple can use different dataset for each series
+      if(layer.data){
+        //convert to an array of objects
+        var tempdata;
+        //avoid lodash for now
+        datakeys = d3.keys(layer.data)
+        tempdata = layer.data[datakeys[1]].map(function(d,i){
+          var tempobj = {}
+          datakeys.forEach(function(key){
+            tempobj[key] = layer.data[key][i]
+          })
+          return tempobj
+        })
+        s.data = tempdata;
+      }
+      
+      if(layer.hasOwnProperty("groups")) {
+        s.categoryFields = (typeof layer.groups === "object") ? layer.groups : [layer.groups];
+        //series offers an aggregate method that we will also need to check if available
+        //options available are avg, count, max, min, sum
+      }
+      if (!(typeof(layer.aggregate) === 'undefined')) {
+        s.aggregate = eval(layer.aggregate);
+      }
+      if (!(typeof(layer.lineWeight) === 'undefined')) {
+        s.lineWeight = layer.lineWeight;
+      }
+      if (!(typeof(layer.barGap) === 'undefined')) {
+        s.barGap = layer.barGap;
+      }    
+      if (!(typeof(layer.interpolation) === 'undefined')) {
+        s.interpolation = layer.interpolation;
+      }     
+     /* if (!(typeof(layer.eventHandler) === 'undefined')) {
+        layer.eventHandler = (layer.eventHandler.length === "undefined") ? layer.eventHandler : [layer.eventHandler];
+        layer.eventHandler.forEach(function(evt){
+          s.addEventHandler(evt.event, eval(evt.handler))
+        })
+      }*/
+        
+      myChart.series.push(s);
+      
+      /*placeholder fix domain of primary scale for new series data
+      //not working right now but something like this
+      //for now just use overrideMin and overrideMax from rCharts
+      for( var i = 0; i<2; i++) {
+        if (!myChart.axes[i].overrideMin) {
+          myChart.series[0]._axisBounds(i==0?"x":"y").min = myChart.series[0]._axisBounds(i==0?"x":"y").min < s._axisBounds(i==0?"x":"y").min ? myChart.series[0]._axisBounds(i==0?"x":"y").min : s._axisBounds(i==0?"x":"y").min;
+        }
+        if (!myChart.axes[i].overrideMax) {  
+          myChart.series[0]._axisBounds(i==0?"x":"y")._max = myChart.series[0]._axisBounds(i==0?"x":"y").max > s._axisBounds(i==0?"x":"y").max ? myChart.series[0]._axisBounds(i==0?"x":"y").max : s._axisBounds(i==0?"x":"y").max;
+        }
+        myChart.axes[i]._update();
+      }
+      */
+      
+      return myChart;
+    };
+  
+      
+    //function to build axes
+    function buildAxis(position, layer, myChart){
+      var axis;
+      var axisopts = opts[position+"Axis"];
+      
+      if(axisopts.measure) {
+        axis = myChart[axisopts.type](position,layer[position],axisopts.measure);
+      } else {
+        axis = myChart[axisopts.type](position, layer[position]);
+      };
+      if(!(axisopts.type === "addPctAxis")) axis.showPercent = axisopts.showPercent;
+      if (axisopts.orderRule) axis.addOrderRule(axisopts.orderRule);
+      if (axisopts.grouporderRule) axis.addGroupOrderRule(axisopts.grouporderRule);  
+      if (axisopts.overrideMin) axis.overrideMin = axisopts.overrideMin;
+      if (axisopts.overrideMax) axis.overrideMax = axisopts.overrideMax;
+      if (axisopts.overrideMax) axis.overrideMax = axisopts.overrideMax;
+      if (axisopts.inputFormat) axis.dateParseFormat = axisopts.inputFormat;
+      if (axisopts.outputFormat) axis.tickFormat = axisopts.outputFormat;    
+      return axis;
+    };
+        
+        
+  
+    //if facet not provided for x or y make Dummy variable
+    //handle NULL facet
+    if (typeof opts.facet == "undefined") opts.facet = {}
+    opts.facet.x = opts.facet.x ? opts.facet.x : "Dummy"
+    opts.facet.y = opts.facet.y ? opts.facet.y : "Dummy"    
+    if(opts.facet.x === "Dummy" || opts.facet.y === "Dummy") {
+      data.forEach(function(d){
+        d.Dummy = 1;
+      })
+    }
+  
+    var rows = d3.set(data.map(function(d){return d[opts.facet.y]})).values();
+    var nrow = opts.facet.nrow ? opts.facet.nrow : rows.length;
+    var cols = d3.set(data.map(function(d){return d[opts.facet.x]})).values()
+    var ncol = opts.facet.ncol ? opts.facet.ncol : cols.length;
+    
+    var tuples = d3.merge(rows.map(function(row,irow){return cols.map(function(col,icol){return {key:row + "~" + col, values: {"row":irow, "col":icol} }})}))
+      
+    var grid = d3.layout.grid()
+      .rows( nrow )
+      .cols( ncol )
+      .size([ opts.width, opts.height-100])
+      .bands();
+    
+    var svgGrid = d3.select("#" + opts.id).append("svg")
+      .attr("width", opts.width)
+      .attr("height", opts.height);
+     // .attr("transform", "translate(50,0)");
+  
+    grid(tuples);
+  
+  /* var cells = d3.select("#" + opts.id).selectAll("svg")
+      .data(grid(tuples))
+      .enter()
+        .append("svg")
+          .attr("class", "cell")
+          .attr("id", function(d) {
+            return d.key;
+          })
+          .attr("transform", function(d, i) {
+             return "translate(" + d.x + "," + d.y + ")"
+           })
+          .attr("width", grid.nodeSize()[0])
+          .attr("height", grid.nodeSize()[1]);
+  
+    var color = d3.scale.linear()
+      .domain([0, 3, 6])
+      .range(["red", "lightgray", "green"]);
+      
+  /*  cells.selectAll("rect")
+      .data(function(d){
+        return [d];
+      })
+        .enter().append("rect")
+          .attr("width", grid.nodeSize()[0])
+          .attr("height", grid.nodeSize()[1])
+          .style("fill", function(d) {return color(d.values.row)});         
+  */
+      tuples.forEach(function(cell,cellnum) {
+          //cell = d3.select(cell);
+      
+          // Filter the data set for the quarter and the price tier
+          // of the current shape
+          var filteredData = dimple.filterData(data, opts.facet.x, cell.key.split('~')[1]);
+          filteredData = dimple.filterData(filteredData, opts.facet.y, cell.key.split('~')[0]);    
+          
+          // Draw a new chart which will go in the current shape
+          var subChart = new dimple.chart(svgGrid, filteredData);
+  
+          if (tuples.length > 1){
+            // Position the chart inside the shape
+            subChart.height = grid.nodeSize()[1]
+            subChart.width = grid.nodeSize()[0]      
+            
+            if (opts.margins) {
+              subChart.setBounds(
+                parseFloat(cell.x + opts.margins.left),
+                parseFloat(cell.y + opts.margins.top),
+                subChart.width - opts.margins.right- opts.margins.left,
+                subChart.height - opts.margins.top - opts.margins.bottom
+              )
+            } else {
+              subChart.setBounds(
+                parseFloat(cell.x + 50), 
+                parseFloat(cell.y + 10),
+                parseFloat(grid.nodeSize()[0] - 50),
+                parseFloat(grid.nodeSize()[1]) - 10
+              );
+            }  
+          } else { //only one chart
+            if (opts.bounds) {
+              subChart.setBounds(opts.bounds.x, opts.bounds.y, opts.bounds.width, opts.bounds.height);//myChart.setBounds(80, 30, 480, 330);
+            }
+          }
+          
+            //dimple allows use of custom CSS with noFormats
+            if(opts.noFormats) { subChart.noFormats = opts.noFormats; };
+            
+            //need to fix later for better colorAxis support
+            if(d3.keys(opts.colorAxis).length > 0) {
+              c = subChart[opts.colorAxis.type](opts.colorAxis.colorSeries,opts.colorAxis.palette) ;
+              if(opts.colorAxis.outputFormat){
+                c.tickFormat = opts.colorAxis.outputFormat;
+              }
+            }
+          
+            //add the colors from the array into the chart's defaultColors
+            if (typeof defaultColorsArray != "undefined"){
+              subChart.defaultColors = defaultColorsArray.map(function(d) {
+                return new dimple.color(d);
+              });          
+            }
+            subChart._assignedColors = assignedColors;
+            
+            subChart = buildSeries(opts, false, subChart);
+            if (opts.layers.length > 0) {
+              opts.layers.forEach(function(layer){
+                subChart = buildSeries(layer, true, subChart);
+              })
+            }
+          
+            //unsure if this is best but if legend is provided (not empty) then evaluate
+            if(d3.keys(opts.legend).length > 0) {
+              var l =subChart.addLegend();
+              d3.keys(opts.legend).forEach(function(d){
+                l[d] = opts.legend[d];
+              });
+            }
+            //quick way to get this going but need to make this cleaner
+            if(opts.storyboard) {
+              subChart.setStoryboard(opts.storyboard);
+            };
+            
+            //catch all for other options
+            //these can be provided by dMyChart$chart( ... )
+              
+            
+            //add facet row and column in case we need later
+            subChart.facetposition = cell.values;
+            
+            subCharts.push(subChart);
+          })
+  
+      subCharts.forEach(function(subChart) {
+        subChart.draw();
+      })
+    
+    //get rid of all y for those not in column 1
+    //can easily customize this to only remove bits and pieces
+    if(opts.facet.removeAxes) {
+      ["x","y","z"].forEach(function(position){
+        //work on axis scaling
+        //assume if remove then same scales for all charts
+        axisdomain = [];      
+        subCharts.forEach(function(subChart){
+          subChart.axes.forEach(function(axis){
+            if (axis.position === position && !axis._hasCategories()){
+              axisdomain.push(axis._scale.domain())
+            }
+          })
+        });
+        axisdomain = d3.extent([].concat.apply([], axisdomain));
+        subCharts.forEach(function(subChart){
+          subChart.axes.forEach(function(axis){
+            if (axis.position === position && !axis._hasCategories()){
+              axis.overrideMin = axisdomain[0];
+              axis.overrideMax = axisdomain[1];
+            }
+          })
+          subChart.draw(null,true)
+        });
+      })
+      
+      //evaluate which do not fall in column 1 or row 1 to remove
+      var xpos = d3.extent(subCharts,function(d){return d.x});
+      var ypos = d3.extent(subCharts,function(d){return d.y});    
+      subCharts.filter(function(d){
+        return d.x!=xpos[0];
+      }).forEach(function(d){
+        d.series[0]._dropLineOrigin = function(){
+          return {"x" : xpos[0],"y" : ypos[1] + d._heightPixels()}
+        }
+        d.axes.forEach(function(axis){
+          if (axis.position === "y"){
+            //leave there for reference but set opacity 0
+            if (axis.shapes) axis.shapes.style("opacity",0);
+            if (axis.titleShape) axis.titleShape.style("opacity",0);
+          }
+        })
+      });
+      //now x for those not in row 1
+      subCharts.filter(function(d){
+        return d.y!=ypos[1];
+      }).forEach(function(d){
+        d.series[0]._dropLineOrigin = function(){
+          return {"x" : xpos[0],"y" : ypos[1] + d._heightPixels()}
+        }        
+        d.axes.forEach(function(axis){
+          if (axis.position === "x"){
+            //leave there for reference but set opacity 0
+            if (axis.shapes) axis.shapes.style("opacity",0);
+            if (axis.titleShape) axis.titleShape.style("opacity",0);
+          }
+        })
+      });
+    }
+  return subCharts;
+  }
+})();  
   
   </script>
 
