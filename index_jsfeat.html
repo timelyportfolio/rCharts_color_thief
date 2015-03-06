@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!--
+help from
+  http://stackoverflow.com/questions/6735470/get-pixel-color-from-canvas-on-mouseover
+-->
+
+<meta charset="utf-8">
+
+<head></head>
+
+<body>
+
+  <div id = "canvas-div">
+    <canvas id = "canvas-example"></canvas>
+  </div>
+  
+</body>
+
+<script>
+
+  var canvasDiv = document.getElementById("canvas-div")
+  var canvas = document.getElementById("canvas-example")
+    
+  var context;
+  var width;
+  var height;
+  
+  //load image and draw on canvas
+  imageObj = new Image();
+  imageObj.onload = function() {
+    initCanvas( );
+  }
+  imageObj.src = "img/heatmap.png"
+
+  function initCanvas() {
+    
+    if(context) context.clearRect(0,0,width,height);
+    
+    width = imageObj.width;
+    height = imageObj.height; 
+    
+    canvasDiv.style.width = width + "px"
+    canvasDiv.style.height = height + "px"
+    
+    canvas.width = width;
+    canvas.height = height;
+
+    context = canvas.getContext("2d");    
+      
+    context.setTransform(1, 0, 0, 1, 0, 0);;
+    
+    draw();
+  }
+    
+  
+  function draw( ) {
+    context.clearRect(0,0,width,height);
+    context.drawImage(imageObj, 0, 0, width, height);
+  }
+
+  //  code from http://stackoverflow.com/questions/6735470/get-pixel-color-from-canvas-on-mouseover
+  
+  function findPos(obj) {
+      var curleft = 0, curtop = 0;
+      if (obj.offsetParent) {
+          do {
+              curleft += obj.offsetLeft;
+              curtop += obj.offsetTop;
+          } while (obj = obj.offsetParent);
+          return { x: curleft, y: curtop };
+      }
+      return undefined;
+  }
+  
+  function rgbToHex(r, g, b) {
+      if (r > 255 || g > 255 || b > 255)
+          throw "Invalid color component";
+      return ((r << 16) | (g << 8) | b).toString(16);
+  }
+  
+  
+  canvas.onmousemove = function(e) {
+      var pos = findPos(this);
+      var x = e.pageX - pos.x;
+      var y = e.pageY - pos.y;
+      var coord = "x=" + x + ", y=" + y;
+      var p = context.getImageData(x, y, 1, 1).data; 
+      var hex = "#" + ("000000" + rgbToHex(p[0], p[1], p[2])).slice(-6);
+      console.log([coord,hex].join(" "));
+  };
+
+</script>
