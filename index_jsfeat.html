@@ -2,16 +2,43 @@
 <!--
 help from
   http://stackoverflow.com/questions/6735470/get-pixel-color-from-canvas-on-mouseover
+  http://bl.ocks.org/jinroh/4666920
 -->
 
 <meta charset="utf-8">
 
-<head></head>
+<head>
+  <script src = "http://d3js.org/d3.v3.js"></script>
+  <style>
+    /* styling from http://bl.ocks.org/jinroh/4666920 */
+    canvas {
+      padding: 0;
+      margin: 0;
+    }
+    svg {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+    }
+    .brush .extent {
+      fill-opacity: .3;
+      shape-rendering: crispEdges;
+    }
+    .resize rect {
+      visibility: visible !important;
+      fill: #333;
+      fill-opacity: .8;
+      stroke: #555;
+      stroke-width: 1.5px;
+    }    
+  </style>
+</head>
 
 <body>
 
   <div id = "canvas-div">
-    <canvas id = "canvas-example"></canvas>
+    <svg id = "overlay"></svg>
+    <canvas id = "canvas-image"></canvas>
   </div>
   
 </body>
@@ -19,11 +46,18 @@ help from
 <script>
 
   var canvasDiv = document.getElementById("canvas-div")
-  var canvas = document.getElementById("canvas-example")
-    
+  var svg = d3.select("#overlay").append("g")
+  var canvas = document.getElementById("canvas-image")
+
   var context;
   var width;
   var height;
+  
+  var brush, brushsize, x, y;
+  
+  var colorScale = d3.scale.linear()
+        .domain([0,1]);
+
   
   //load image and draw on canvas
   imageObj = new Image();
@@ -44,12 +78,17 @@ help from
     
     canvas.width = width;
     canvas.height = height;
+    
+    d3.select(svg.node().parentNode).attr("height", canvasDiv.style.height);
+    d3.select(svg.node().parentNode).attr("width", canvasDiv.style.width)
 
     context = canvas.getContext("2d");    
       
     context.setTransform(1, 0, 0, 1, 0, 0);;
     
     draw();
+    
+    setupBrush();
   }
     
   
@@ -57,6 +96,74 @@ help from
     context.clearRect(0,0,width,height);
     context.drawImage(imageObj, 0, 0, width, height);
   }
+  
+  function setupBrush( ){
+     brushsize = 6
+     x = d3.scale.linear().range([0, width]);
+     y = d3.scale.linear().range([height, 0]);
+
+    brush = d3.svg.brush()
+      .x(x)
+      .y(y)
+      .extent([[.4, .4],[.6, .6]])
+      .on("brushend", brushend);
+      
+    svg.append("g")
+        .attr("class", "brush")
+        .call(brush);       
+      
+  }
+  
+  function brushend() {
+    updateColorScale(brush.extent());
+  }
+  
+  // update color scale to newly brushed area
+  //  for now assume scale is horizontal
+  function updateColorScale( extent ){
+   var pos = findPos(canvas);
+    
+    var x0 = x(extent[0][0]);
+    var x1 = x(extent[1][0]);
+    var ymid = (y(extent[0][1]) + y(extent[1][1]))/2 - brushsize;
+    console.log(ymid)
+    var colorRange = [];
+    var colorDomain = [];
+    //arbitrarily pick 1000 spots on the range
+    for(i = 0; i < 1000; i++){
+      x = (x1 - x0)/1000 * i + x0
+      p = context.getImageData(x, ymid, 1, 1).data; 
+      hex = "#" + ("000000" + rgbToHex(p[0], p[1], p[2])).slice(-6);
+      colorDomain.push(i/1000);
+      colorRange.push(hex);
+    }
+    colorScale.range(colorRange).domain(colorDomain);
+  }
+  
+  // use this code for closest color
+  // http://stackoverflow.com/questions/17175664/get-the-closest-color-name-depending-on-an-hex-color
+  // maybe use this https://github.com/dtao/nearest-color/blob/master/nearestColor.js
+  Array.closest = (function () {
+    function dist(s, t) {
+        if (!s.length || !t.length) return 0;
+        return dist(s.slice(2), t.slice(2)) +
+            Math.abs(parseInt(s.slice(0, 2), 16) - parseInt(t.slice(0, 2), 16));
+    }
+
+    return function (arr, str) {
+      debugger;
+        var min = 0xffffff;
+        var best, current, i;
+        for (i = 0; i < arr.length; i++) {
+            current = dist(arr[i], str)
+            if (current < min) {
+                min = current
+                best = arr[i];
+            }
+        }
+        return best;
+    };
+  }())
 
   //  code from http://stackoverflow.com/questions/6735470/get-pixel-color-from-canvas-on-mouseover
   
@@ -79,14 +186,14 @@ help from
   }
   
   
-  canvas.onmousemove = function(e) {
-      var pos = findPos(this);
-      var x = e.pageX - pos.x;
-      var y = e.pageY - pos.y;
+  svg.on("mousemove", function() {
+      var pos = findPos(canvas);
+      var x = d3.event.pageX - pos.x;
+      var y = d3.event.pageY - pos.y;
       var coord = "x=" + x + ", y=" + y;
       var p = context.getImageData(x, y, 1, 1).data; 
       var hex = "#" + ("000000" + rgbToHex(p[0], p[1], p[2])).slice(-6);
       console.log([coord,hex].join(" "));
-  };
+  });
 
 </script>
