@@ -3,12 +3,14 @@
 help from
   http://stackoverflow.com/questions/6735470/get-pixel-color-from-canvas-on-mouseover
   http://bl.ocks.org/jinroh/4666920
+  https://github.com/dtao/nearest-color
 -->
 
 <meta charset="utf-8">
 
 <head>
   <script src = "http://d3js.org/d3.v3.js"></script>
+  <script src = "js/nearestColor.js"></script>
   <style>
     /* styling from http://bl.ocks.org/jinroh/4666920 */
     canvas {
@@ -57,7 +59,9 @@ help from
   
   var colorScale = d3.scale.linear()
         .domain([0,1]);
-
+  var colorRef;
+        
+  var nearest;
   
   //load image and draw on canvas
   imageObj = new Image();
@@ -122,6 +126,8 @@ help from
   //  for now assume scale is horizontal
   function updateColorScale( extent ){
    var pos = findPos(canvas);
+   
+   colorRef = {};
     
     var x0 = x(extent[0][0]);
     var x1 = x(extent[1][0]);
@@ -138,33 +144,14 @@ help from
       colorRange.push(hex);
     }
     colorScale.range(colorRange).domain(colorDomain);
+    
+    colorRange.map(function(d,i){
+      colorRef[d] = colorDomain[i];
+    })
+    
+    nearest = nearestColor.from( colorRange );
   }
   
-  // use this code for closest color
-  // http://stackoverflow.com/questions/17175664/get-the-closest-color-name-depending-on-an-hex-color
-  // maybe use this https://github.com/dtao/nearest-color/blob/master/nearestColor.js
-  Array.closest = (function () {
-    function dist(s, t) {
-        if (!s.length || !t.length) return 0;
-        return dist(s.slice(2), t.slice(2)) +
-            Math.abs(parseInt(s.slice(0, 2), 16) - parseInt(t.slice(0, 2), 16));
-    }
-
-    return function (arr, str) {
-      debugger;
-        var min = 0xffffff;
-        var best, current, i;
-        for (i = 0; i < arr.length; i++) {
-            current = dist(arr[i], str)
-            if (current < min) {
-                min = current
-                best = arr[i];
-            }
-        }
-        return best;
-    };
-  }())
-
   //  code from http://stackoverflow.com/questions/6735470/get-pixel-color-from-canvas-on-mouseover
   
   function findPos(obj) {
@@ -194,6 +181,7 @@ help from
       var p = context.getImageData(x, y, 1, 1).data; 
       var hex = "#" + ("000000" + rgbToHex(p[0], p[1], p[2])).slice(-6);
       console.log([coord,hex].join(" "));
+      console.log([nearest(hex),colorRef[nearest(hex)]].join(":"))
   });
 
 </script>
