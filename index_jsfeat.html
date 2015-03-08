@@ -38,9 +38,14 @@ help from
 
 <body>
 
-  <div id = "canvas-div">
+  <div id = "canvas-div" style = "float:left">
     <svg id = "overlay"></svg>
     <canvas id = "canvas-image"></canvas>
+  </div>
+  <div id = "color-block" style = "height:300px;width:300px;float:left;">
+    <h1>Color Information</h1>
+    <span id = "color-hex">Color</span><br/>
+    <span id = "color-value">Value</span><br/>
   </div>
   
 </body>
@@ -55,13 +60,15 @@ help from
   var width;
   var height;
   
-  var brush, brushsize, x, y;
+  var brush, brushsize;
+  var xScale = d3.scale.linear();
+  var yScale = d3.scale.linear();
   
   var colorScale = d3.scale.linear()
         .domain([0,1]);
   var colorRef;
         
-  var nearest;
+  var nearest = nearestColor;
   
   //load image and draw on canvas
   imageObj = new Image();
@@ -103,12 +110,12 @@ help from
   
   function setupBrush( ){
      brushsize = 6
-     x = d3.scale.linear().range([0, width]);
-     y = d3.scale.linear().range([height, 0]);
+     xScale.range([0, width]);
+     yScale.range([height, 0]);
 
     brush = d3.svg.brush()
-      .x(x)
-      .y(y)
+      .x(xScale)
+      .y(yScale)
       .extent([[.4, .4],[.6, .6]])
       .on("brushend", brushend);
       
@@ -126,30 +133,33 @@ help from
   //  for now assume scale is horizontal
   function updateColorScale( extent ){
    var pos = findPos(canvas);
-   
-   colorRef = {};
-    
-    var x0 = x(extent[0][0]);
-    var x1 = x(extent[1][0]);
-    var ymid = (y(extent[0][1]) + y(extent[1][1]))/2 - brushsize;
-    console.log(ymid)
-    var colorRange = [];
-    var colorDomain = [];
-    //arbitrarily pick 1000 spots on the range
-    for(i = 0; i < 1000; i++){
-      x = (x1 - x0)/1000 * i + x0
-      p = context.getImageData(x, ymid, 1, 1).data; 
-      hex = "#" + ("000000" + rgbToHex(p[0], p[1], p[2])).slice(-6);
-      colorDomain.push(i/1000);
-      colorRange.push(hex);
-    }
-    colorScale.range(colorRange).domain(colorDomain);
-    
-    colorRange.map(function(d,i){
-      colorRef[d] = colorDomain[i];
-    })
-    
-    nearest = nearestColor.from( colorRange );
+   if(!brush.empty()){
+     colorRef = {};
+      
+      var x0 = xScale(extent[0][0]);
+      var x1 = xScale(extent[1][0]);
+      var ymid = (yScale(extent[0][1]) + yScale(extent[1][1]))/2 - brushsize;
+      console.log(ymid)
+      var colorRange = [];
+      var colorDomain = [];
+      //arbitrarily pick 1000 spots on the range
+      for(i = 0; i < 1000; i++){
+        var x = (x1 - x0)/1000 * i + x0
+        var p = context.getImageData(x, ymid, 1, 1).data; 
+        var hex = "#" + ("000000" + rgbToHex(p[0], p[1], p[2])).slice(-6);
+        colorDomain.push(i/1000);
+        colorRange.push(hex);
+      }
+      colorScale.range(colorRange).domain(colorDomain);
+      
+      colorRange.forEach(function(d,i){
+        colorRef[d] = colorDomain[i];
+      })
+     
+      if( colorRange.length > 2 ){
+        nearest = nearestColor.from( colorRange );
+      }
+   }
   }
   
   //  code from http://stackoverflow.com/questions/6735470/get-pixel-color-from-canvas-on-mouseover
@@ -182,6 +192,12 @@ help from
       var hex = "#" + ("000000" + rgbToHex(p[0], p[1], p[2])).slice(-6);
       console.log([coord,hex].join(" "));
       console.log([nearest(hex),colorRef[nearest(hex)]].join(":"))
+      d3.select("#color-block")
+        .style("background-color",hex);
+      d3.select("#color-value")
+        .text(colorRef[nearest(hex)])
+      d3.select("#color-hex")
+        .text(hex)
   });
 
 </script>
