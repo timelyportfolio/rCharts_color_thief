@@ -4,6 +4,7 @@ help from
   http://stackoverflow.com/questions/6735470/get-pixel-color-from-canvas-on-mouseover
   http://bl.ocks.org/jinroh/4666920
   https://github.com/dtao/nearest-color
+  https://github.com/Nycto/PicoModal
 -->
 
 <meta charset="utf-8">
@@ -11,6 +12,8 @@ help from
 <head>
   <script src = "http://d3js.org/d3.v3.js"></script>
   <script src = "js/nearestColor.js"></script>
+  <script src = "js/picoModal.js"></script>
+  
   <style>
     /* styling from http://bl.ocks.org/jinroh/4666920 */
     canvas {
@@ -81,8 +84,8 @@ help from
     
     if(context) context.clearRect(0,0,width,height);
     
-    width = imageObj.width;
-    height = imageObj.height; 
+    width = imageObj.width * 0.8;
+    height = imageObj.height * 0.8; 
     
     canvasDiv.style.width = width + "px"
     canvasDiv.style.height = height + "px"
@@ -95,7 +98,7 @@ help from
 
     context = canvas.getContext("2d");    
       
-    context.setTransform(1, 0, 0, 1, 0, 0);;
+    context.setTransform(0.8, 0, 0, 0.8, 0, 0);;
     
     draw();
     
@@ -126,7 +129,25 @@ help from
   }
   
   function brushend() {
-    updateColorScale(brush.extent());
+    var pMod = picoModal([
+      "<h1>Adjust Scale Below</h1>",
+      "Scale Min:<div id='scale_min' contentEditable='true'>" +
+          ((document.getElementById("scale_min")) ? document.getElementById("scale_min").textContent : 0) + "</div>",
+      "Scale Max:<div id='scale_max' contentEditable='true'>" +
+          ((document.getElementById("scale_max")) ? document.getElementById("scale_max").textContent : 1) + "</div>"
+    ].join("\n"))
+      .beforeClose(function(modal){
+        colorScale.domain([
+          parseFloat(modal.modalElem().childNodes[2].textContent),
+          parseFloat(modal.modalElem().childNodes[4].textContent)
+        ])
+        document.getElementById("scale_min").innerText = colorScale.domain()[0]
+        document.getElementById("scale_max").innerText = colorScale.domain()[1]
+      })
+      .afterClose(function(modal){
+        updateColorScale(brush.extent());
+      })
+      .show()
   }
   
   // update color scale to newly brushed area
@@ -147,7 +168,7 @@ help from
         var x = (x1 - x0)/1000 * i + x0
         var p = context.getImageData(x, ymid, 1, 1).data; 
         var hex = "#" + ("000000" + rgbToHex(p[0], p[1], p[2])).slice(-6);
-        colorDomain.push(i/1000);
+        colorDomain.push(colorScale.domain()[0]+((colorScale.domain()[1]-colorScale.domain()[0])/1000 * i));
         colorRange.push(hex);
       }
       colorScale.range(colorRange).domain(colorDomain);
