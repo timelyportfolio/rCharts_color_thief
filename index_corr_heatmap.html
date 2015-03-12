@@ -41,12 +41,12 @@ help from
 
 <body>
 
-  <div id = "canvas-div" style = "float:left; height: 400px; width: 400px;">
+  <div id = "canvas-div" style = "float:left; height: 600px; width: 600px;">
     <svg id = "overlay"></svg>
     <canvas id = "canvas-image"></canvas>
   </div>
-  <div id = "color-block" style = "height:300px;width:300px;float:left;border-radius:50%; text-align: center;">
-    <h1>Color Information</h1>
+  <div id = "color-block" style = "height:150px;width:150px;float:left;border-radius:50%; text-align: center;">
+    <h3>Color Information</h3>
     <span id = "color-hex">Color</span><br/>
     <span id = "color-value">Value</span><br/>
   </div>
@@ -84,8 +84,8 @@ help from
     
     if(context) context.clearRect(0,0,width,height);
     
-    width = 400//imageObj.width * 0.8;
-    height = 400//imageObj.height * 0.8; 
+    width = imageObj.width * 0.8;
+    height = imageObj.height * 0.8; 
     
     //canvasDiv.style.width = width + "px"
     //canvasDiv.style.height = height + "px"
@@ -98,7 +98,7 @@ help from
 
     context = canvas.getContext("2d");    
       
-    context.setTransform(1, 0, 0, 1, 0, 0);;
+    context.setTransform(0.8, 0, 0, 0.8, 0, 0);;
     
     draw();
     
