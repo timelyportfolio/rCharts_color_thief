@@ -41,7 +41,7 @@ help from
 
 <body>
 
-  <div id = "canvas-div" style = "float:left; height: 600px; width: 600px;">
+  <div id = "canvas-div" style = "float:left; height: 300px; width: 600px;">
     <svg id = "overlay"></svg>
     <canvas id = "canvas-image"></canvas>
   </div>
@@ -85,10 +85,10 @@ help from
     if(context) context.clearRect(0,0,width,height);
     
     width = imageObj.width * 0.8;
-    height = imageObj.height * 0.8; 
+   // height = imageObj.height * 0.8; 
     
-    //canvasDiv.style.width = width + "px"
-    //canvasDiv.style.height = height + "px"
+    canvasDiv.style.width = width + "px"
+    canvasDiv.style.height = height + "px"
     
     canvas.width = width;
     canvas.height = height;
